@@ -56,11 +56,20 @@ public class Player : MonoBehaviour
 
     private int _health = 100;
 
+    private Item[] _inventory = new Item[5];
+    private int _itemIndex = 0;
+
+
     // TEMP SHIT
     [SerializeField] private Text _healthText;
     
     void SetHealthText() => _healthText.text = $"Health: {_health}";
 
+    public void Heal(int health)
+    {
+        _health = Mathf.Min(_health + health, 100);
+        SetHealthText();
+    }
 
     private void Awake()
     {
@@ -94,10 +103,10 @@ public class Player : MonoBehaviour
         {
             _flash.ChargeBattery(20f);
         }
-        // if (Input.GetKeyDown(KeyCode.Q))
-        // {
-        //     Stun(5f);
-        // }
+        if (Input.GetMouseButton(0))
+        {
+            _inventory[_itemIndex]?.Primary();
+        }
     }
 
     public void TakeDamage(int damage)

@@ -127,22 +127,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (constrainPos != null)
         {
-            Vector3 startPos = body.position;
-            Vector3 destPos = (Vector3)constrainPos;
-
             smoothMoveTime = Mathf.Min(duration, smoothMoveTime);
-            float elapsed = 0f;
-
-            while (elapsed < smoothMoveTime)
-            {
-                elapsed += Time.deltaTime;
-                body.position = Vector3.Lerp(startPos, destPos, (elapsed / smoothMoveTime));
-
-                yield return null;
-            }
+            yield return StartCoroutine(transform.SmoothMove(smoothMoveTime, (Vector3)constrainPos));
 
             duration -= smoothMoveTime;
-            body.position = destPos;
         }
         
         yield return new WaitForSeconds(duration);
