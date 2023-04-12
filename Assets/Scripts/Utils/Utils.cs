@@ -6,4 +6,5 @@ public enum Layer
     Enemy = 8,
     PlayerTrigger = 9,
     Floor = 10,
+    PlayerInteract = 11
 }
