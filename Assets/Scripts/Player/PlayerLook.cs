@@ -6,6 +6,9 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float _sensitivity = 1f;
     private float _camPitch;
 
+    [SerializeField] private float _detectRange = 3f;
+    private int _cameraRaycastLayer = (1 << (int)Layer.PlayerInteract);
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -22,4 +25,17 @@ public class PlayerLook : MonoBehaviour
         _camPitch = Mathf.Clamp(_camPitch - mouseY, -90f, 90f);
         _viewHolder.localEulerAngles = Vector3.right * _camPitch; 
     }
+
+    // returns the Interactable Object the player is looking at
+    // returns null if none
+    public Interactable GetFocusedInteractable()
+    {
+        if (Physics.Raycast(_viewHolder.position, _viewHolder.forward, out RaycastHit hit, _detectRange, _cameraRaycastLayer))
+        {
+            return hit.transform.GetComponent<Interactable>();    
+        }
+        return null;
+    }
 }
+
+

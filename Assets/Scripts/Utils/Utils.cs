@@ -1,3 +1,5 @@
+using UnityEngine;
+using System.Collections;
 
 public enum Layer
 {
@@ -6,5 +8,5 @@ public enum Layer
     Enemy = 8,
     PlayerTrigger = 9,
     Floor = 10,
-    PlayerInteract = 11
+    PlayerInteract = 11,
 }
