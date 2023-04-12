@@ -24,13 +24,13 @@ public class PlayerMovement : MonoBehaviour
     {
         staminaText.text = $"Stamina: {_stamina:.00}";
     }
+
     public Rigidbody body { get; private set; }
     private Vector3 _moveVec;
     private float _stamina = 100f;
     private float _nextStaminaRecharge; // Have to surpass this time for stamina to recharge
     private bool _canMove = true;
     private Coroutine _bindRoutine; // to prevent overlapping binds
-
 
     #endregion
     #region Monobehaviour Methods
@@ -88,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
 
         _stamina = Mathf.Clamp(_stamina, 0f, 100f);
 
-
         _moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed;
 
         // TODO: Ground checking
@@ -108,10 +107,8 @@ public class PlayerMovement : MonoBehaviour
         body.MovePosition(body.position + _moveVec * Time.fixedDeltaTime);
     }
 
-
     #endregion
-    #region My Methods
-
+    #region Public Methods
 
     // constrainPos:    Where the player should be bound to
     // smoothMoveTime:  How many seconds to move to constrainPos
@@ -121,28 +118,17 @@ public class PlayerMovement : MonoBehaviour
         _bindRoutine = StartCoroutine(BindRoutine(duration, constrainPos, smoothMoveTime));
     }
 
+
     private IEnumerator BindRoutine(float duration, Vector3? constrainPos = null, float smoothMoveTime = 0f)
     {
         _canMove = false;
 
         if (constrainPos != null)
         {
-            Vector3 startPos = body.position;
-            Vector3 destPos = (Vector3)constrainPos;
-
             smoothMoveTime = Mathf.Min(duration, smoothMoveTime);
-            float elapsed = 0f;
-
-            while (elapsed < smoothMoveTime)
-            {
-                elapsed += Time.deltaTime;
-                body.position = Vector3.Lerp(startPos, destPos, (elapsed / smoothMoveTime));
-
-                yield return null;
-            }
+            yield return StartCoroutine(transform.SmoothMove(smoothMoveTime, (Vector3)constrainPos));
 
             duration -= smoothMoveTime;
-            body.position = destPos;
         }
         
         yield return new WaitForSeconds(duration);
@@ -150,6 +136,15 @@ public class PlayerMovement : MonoBehaviour
         _canMove = true;
     }
 
+    // public void SpeedBoost(float multiplier, float duration) => StartCoroutine(SpeedBoostRoutine(multiplier, duration));
+
+    // // Doesn't stack!
+    // private IEnumerator SpeedBoostRoutine(float multiplier, float duration)
+    // {
+    //     _speedMultiplier = multiplier;
+    //     yield return new WaitForSeconds(duration);
+    //     _speedMultiplier = 1f;
+    // }
 
     #endregion
 }

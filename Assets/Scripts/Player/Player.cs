@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     public static Vector3 Position { get { return Transform.position; } set { Transform.position = value; } }
 
 
+    // use this method to initialize non-static fields
     private static void InitFields()
     {
         _instance._move = _instance.GetComponent<PlayerMovement>();
@@ -50,17 +51,14 @@ public class Player : MonoBehaviour
 
     #endregion
 
-
     [SerializeField] private Flashlight _flash;
 
-
+    [SerializeField] private Text _healthText; // TEMP
     private int _health = 100;
-
-    // TEMP SHIT
-    [SerializeField] private Text _healthText;
-    
     void SetHealthText() => _healthText.text = $"Health: {_health}";
 
+    // private Item[] _inventory = new Item[5];
+    // private int _itemIndex = 0;
 
     private void Awake()
     {
@@ -76,7 +74,6 @@ public class Player : MonoBehaviour
             return;
         }
     }
-
 
     private void Update()
     {
@@ -94,11 +91,13 @@ public class Player : MonoBehaviour
         {
             _flash.ChargeBattery(20f);
         }
-        // if (Input.GetKeyDown(KeyCode.Q))
-        // {
-        //     Stun(5f);
-        // }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            _look.GetFocusedInteractable()?.OnInteract();
+        }
     }
+
+    #region Public Methods
 
     public void TakeDamage(int damage)
     {
@@ -110,7 +109,7 @@ public class Player : MonoBehaviour
         SetHealthText();
     }
 
-    public void Bleed(int ammount, int count, float interval = 0.1f) => StartCoroutine(BleedRoutine(ammount, count, interval));
+    public void Bleed(int ammount, int count, float interval) => StartCoroutine(BleedRoutine(ammount, count, interval));
     private IEnumerator BleedRoutine(int ammount, int count, float interval)
     {
         while (count-- > 0)
@@ -120,34 +119,12 @@ public class Player : MonoBehaviour
             TakeDamage(ammount);
         }
     }
-
-    // TODO:
-    // public void TakeDamage(Damage damage)
-    // {
-
-    // }
-
-    public void Stun(float duration)
+    
+    public void Heal(int health)
     {
-        StartCoroutine(StunRoutine(duration));
+        _health = Mathf.Min(_health + health, 100);
+        SetHealthText();
     }
 
-    private IEnumerator StunRoutine(float duration)
-    {
-        Vector3 pos = transform.position;
-        Quaternion rot = transform.rotation;
-        RigidbodyConstraints constraints = _move.body.constraints;
-
-        _move.body.constraints = RigidbodyConstraints.None;
-        _move.body.AddForce(Random.onUnitSphere * 100f);
-        _look.enabled = false;
-
-        _move.Bind(duration);
-        yield return new WaitForSeconds(duration);
-
-        _look.enabled = true;
-        _move.body.constraints = constraints;
-        transform.rotation = rot;
-        transform.position = pos;
-    }
+    #endregion
 }
