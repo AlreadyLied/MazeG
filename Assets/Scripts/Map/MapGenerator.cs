@@ -218,7 +218,7 @@ public class MapGenerator
         #region SpawnMonsters
         // Configs
         List<GameObject> spawnedMonster = new List<GameObject>();
-        int monsterNum = 1;
+        int monsterNum = 3;
         int setSpawnLengthInterval = 3;
         int spawnLengthInterval = setSpawnLengthInterval * 2 + 1;
 
