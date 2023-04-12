@@ -973,14 +973,15 @@ MonoBehaviour:
   _mazeConfig:
     mapSize: 30
     wallSize: 3
-    wallHeight: 20
+    wallHeight: 10
     baseSize: 3
     wallPrefab: {fileID: 6492481463518003061, guid: 5162d3f9a9e24424e83e7f9143ce1d67, type: 3}
+    exitPrefab: {fileID: 8238572966701939295, guid: 19fa77d23f80ae94abeeb1a4242980e2, type: 3}
+    batteryPrefab: {fileID: 7461594615981988273, guid: 57c1f87d6a7ae6746bd843dc64ab26c8, type: 3}
     monsterPrefab:
     - {fileID: 6147614326528603683, guid: 9bd7c4e5a59c12049a27dda1d72ec0a1, type: 3}
     - {fileID: 6147614326528603683, guid: 5c3a8720b20a9004d8e7867fea786aac, type: 3}
     - {fileID: 6147614326528603683, guid: f95ab1799f4569c4eaf817ff33a13c0e, type: 3}
-    batteryPrefab: {fileID: 7461594615981988273, guid: 57c1f87d6a7ae6746bd843dc64ab26c8, type: 3}
   _surface: {fileID: 1587925865}
 --- !u!4 &1276595800
 Transform:

@@ -179,6 +179,7 @@ public class MapGenerator
         baseSize = config.baseSize;
         GameObject wallPrefab = config.wallPrefab;
         GameObject batteryPrefab = config.batteryPrefab;
+        GameObject exitPrebaf = config.exitPrefab;
         GameObject[] monsterList = config.monsterPrefab;
 
         rooms = new Room[mapSize, mapSize];
@@ -211,6 +212,11 @@ public class MapGenerator
                 {
                     GameObject.Instantiate(batteryPrefab, new Vector3(x * wallSize, 1, y * wallSize),
                         Quaternion.identity, batteryHolder);
+                }
+
+                if (map[x, y] == 2)
+                {
+                    GameObject.Instantiate(exitPrebaf, new Vector3(x * wallSize, wallHeight / 2, y * wallSize), Quaternion.identity, wallsHolder);
                 }
             }
         }
@@ -266,6 +272,7 @@ public class MazeConfiguration
     public int wallHeight;
     public int baseSize;
     public GameObject wallPrefab;
-    public GameObject[] monsterPrefab;
+    public GameObject exitPrefab;
     public GameObject batteryPrefab;
+    public GameObject[] monsterPrefab;
 }
