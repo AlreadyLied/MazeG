@@ -14,6 +14,7 @@ public class MapGenerator
     private static int baseSize = 3;
     private static int holeNum = 120;
     private static int batteryNum = 10;
+    private static int itemNum = 20;
     
     [Header("Maze")]
     private static int[,] maze;
@@ -31,6 +32,7 @@ public class MapGenerator
     private static List<Tuple<int, int>> visited = new List<Tuple<int, int>>();
     private static Transform wallsHolder;
     private static Transform batteryHolder;
+    private static Transform chestHolder;
     private static Random random = new Random();
 
     class Room
@@ -122,6 +124,23 @@ public class MapGenerator
         maze[exitLocation.Item2, exitLocation.Item1] = 2;
         #endregion
 
+        #region DrawItemChests
+        int itemSpawnCount = 0;
+        while (itemSpawnCount < itemNum)
+        {
+            int x = random.Next(1, mazeLength - 1);
+            int y = random.Next(1, mazeLength - 1);
+            if (maze[y, x - 1] + maze[y, x + 1] + maze[y - 1, x] + maze[y + 1, x] == 3 && maze[y, x - 1] != 2 && maze[y, x + 1] != 2 && maze[y - 1, x] != 2 && maze[y + 1, x] != 2)
+            {
+                if (maze[y, x] == 0)
+                {
+                    maze[y, x] = 5;
+                    itemSpawnCount++;
+                }
+            }
+        }
+        #endregion
+
         #region DrawBase
         for (int x = mapSize - baseSize; x <= mapSize + baseSize; x++)
         {
@@ -180,6 +199,7 @@ public class MapGenerator
         GameObject wallPrefab = config.wallPrefab;
         GameObject batteryPrefab = config.batteryPrefab;
         GameObject exitPrebaf = config.exitPrefab;
+        GameObject chestPrefab = config.chestPrefab;
         GameObject[] monsterList = config.monsterPrefab;
 
         rooms = new Room[mapSize, mapSize];
@@ -187,15 +207,9 @@ public class MapGenerator
 
         int[,] map = DrawMap();
 
-        if (wallsHolder == null)
-        {
-            wallsHolder = new GameObject("Walls").transform;
-        }
-
-        if (batteryHolder == null)
-        {
-            batteryHolder = new GameObject("Batteries").transform;
-        }
+        wallsHolder = new GameObject("Walls").transform;
+        batteryHolder = new GameObject("Batteries").transform;
+        chestHolder = new GameObject("Chests").transform;
 
         // Generate Wall and Battery
         int mazeLength = mapSize * 2 + 1;
@@ -217,6 +231,12 @@ public class MapGenerator
                 if (map[x, y] == 2)
                 {
                     GameObject.Instantiate(exitPrebaf, new Vector3(x * wallSize, wallHeight / 2, y * wallSize), Quaternion.identity, wallsHolder);
+                }
+
+                if (map[x, y] == 5)
+                {
+                    GameObject.Instantiate(chestPrefab, new Vector3(x * wallSize, 1, y * wallSize),
+                        Quaternion.identity, chestHolder);
                 }
             }
         }
@@ -274,5 +294,6 @@ public class MazeConfiguration
     public GameObject wallPrefab;
     public GameObject exitPrefab;
     public GameObject batteryPrefab;
+    public GameObject chestPrefab;
     public GameObject[] monsterPrefab;
 }
