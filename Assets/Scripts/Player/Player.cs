@@ -91,13 +91,9 @@ public class Player : MonoBehaviour
         {
             _flash.ChargeBattery(20f);
         }
-        // if (Input.GetMouseButton(0))
-        // {
-        //     _inventory[_itemIndex]?.Primary();
-        // }
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            Bleed(1, 5, 1f);
+            _look.GetFocusedInteractable()?.OnInteract();
         }
     }
 
