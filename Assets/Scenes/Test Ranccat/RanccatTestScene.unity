@@ -862,7 +862,7 @@ GameObject:
   m_Component:
   - component: {fileID: 613127354}
   m_Layer: 0
-  m_Name: UI (DEBUG)
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1526,6 +1526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewHolder: {fileID: 1948408984}
   _sensitivity: 1
+  _detectRange: 3
 --- !u!114 &1223033864
 MonoBehaviour:
   m_ObjectHideFlags: 0

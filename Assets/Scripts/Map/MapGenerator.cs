@@ -12,7 +12,7 @@ public class MapGenerator
     private static int wallSize;
     private static int wallHeight;
     private static int baseSize = 3;
-    private static int holeNum = 120;
+    private static int holeNum = 240;
     private static int batteryNum = 10;
     private static int itemNum = 20;
     
@@ -121,7 +121,25 @@ public class MapGenerator
         randomExitLocations.Add(new Tuple<int, int>(mapSize * 2, mapSize));
         randomExitLocations.Add(new Tuple<int, int>(mapSize, mapSize * 2));
         Tuple<int, int> exitLocation = randomExitLocations[random.Next(4)];
-        maze[exitLocation.Item2, exitLocation.Item1] = 2;
+        int exitX = exitLocation.Item1;
+        int exitY = exitLocation.Item2;
+        maze[exitY, exitX] = 2;
+        if (exitX == mapSize && exitY == 0)
+        {
+            maze[++exitY, exitX] = 0;
+        }
+        if (exitX == 0 && exitY == mapSize)
+        {
+            maze[exitY, ++exitX] = 0;
+        }
+        if (exitX == mapSize && exitY == mapSize * 2)
+        {
+            maze[--exitY, exitX] = 0;
+        }
+        if (exitX == mapSize * 2 && exitY == mapSize)
+        {
+            maze[exitY, --exitX] = 0;
+        }
         #endregion
 
         #region DrawItemChests
