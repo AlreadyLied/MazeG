@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerEX : MonoBehaviour
 {
+    public static SceneManagerEX instance;
     public void DebugChangeToMainGameScene()
     {
         SceneManager.LoadScene("RanccatTestScene");
