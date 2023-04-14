@@ -9,13 +9,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("General")]
     [SerializeField] private float _walkSpeed = 4f;
     [SerializeField] private float _runSpeed = 8f;
-    [SerializeField] private float _jumpForce = 200f;
 
     [Header("Stamina")]
     [SerializeField] private float _staminaDrainRate = 1/8f;
     [SerializeField] private float _staminaRechargeRate = 1/2f;
     [SerializeField] private float _staminaRechargeDelay = 1.5f; // How many seconds of not running it takes for stamina to recharge
+
+    [Header("Jump")]
+    [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private float _jumpStaminaCost = 5f;
+    [SerializeField] private float _gravityMultiplier = 1f; // cannot change mid run
 
     [Header("TEMP SHIT")]
     public Text staminaText;
@@ -25,11 +28,12 @@ public class PlayerMovement : MonoBehaviour
         staminaText.text = $"Stamina: {_stamina:.00}";
     }
 
-    public Rigidbody body { get; private set; }
-    private Vector3 _moveVec;
+    private CharacterController _controller;
+    private Vector3 _yVelocity;
+    private Vector3 _gravity;
+    private bool _canMove = true;
     private float _stamina = 100f;
     private float _nextStaminaRecharge; // Have to surpass this time for stamina to recharge
-    private bool _canMove = true;
     private Coroutine _bindRoutine; // to prevent overlapping binds
 
     #endregion
@@ -37,22 +41,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        body = GetComponent<Rigidbody>();
+        _controller = GetComponent<CharacterController>();
+        _gravity = Physics.gravity * _gravityMultiplier;
     }
 
     private void Update()
     {
         if (!_canMove)
         {
-            _moveVec = Vector3.zero;
-
             if (_stamina < 100f && Time.time >= _nextStaminaRecharge)
             {
                 _stamina += _staminaRechargeRate * Time.deltaTime;
             }
 
             _stamina = Mathf.Clamp(_stamina, 0f, 100f);
-
             return;
         }
 
@@ -86,25 +88,28 @@ public class PlayerMovement : MonoBehaviour
             speed = _walkSpeed;
         }
 
-        _stamina = Mathf.Clamp(_stamina, 0f, 100f);
+        Vector3 moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed;
 
-        _moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed;
-
-        // TODO: Ground checking
-        if (Input.GetKeyDown(KeyCode.Space) && _stamina >= _jumpStaminaCost)
+        if (_controller.isGrounded)
         {
-            body.AddForce(Vector3.up * _jumpForce);
-            _stamina -= _jumpStaminaCost;
-            _nextStaminaRecharge = Time.time + _staminaRechargeDelay;
+            if (Input.GetKey(KeyCode.Space) && _stamina >= _jumpStaminaCost)
+            {
+                _yVelocity.y = _jumpForce;
+
+                _stamina -= _jumpStaminaCost;
+                _nextStaminaRecharge = Time.time + _staminaRechargeDelay;
+            }
+            else if (_yVelocity.y < 0f)
+            {
+                _yVelocity.y = 0f;
+            }
         }
 
+        _yVelocity += _gravity * Time.deltaTime; // sqrd
+        _controller.Move((moveVec + _yVelocity) * Time.deltaTime);
 
+        _stamina = Mathf.Clamp(_stamina, 0f, 100f);
         UpdateText();
-    }
-
-    private void FixedUpdate()
-    {
-        body.MovePosition(body.position + _moveVec * Time.fixedDeltaTime);
     }
 
     #endregion
@@ -117,7 +122,6 @@ public class PlayerMovement : MonoBehaviour
         if (_bindRoutine != null) StopCoroutine(_bindRoutine);
         _bindRoutine = StartCoroutine(BindRoutine(duration, constrainPos, smoothMoveTime));
     }
-
 
     private IEnumerator BindRoutine(float duration, Vector3? constrainPos = null, float smoothMoveTime = 0f)
     {
@@ -135,16 +139,6 @@ public class PlayerMovement : MonoBehaviour
 
         _canMove = true;
     }
-
-    // public void SpeedBoost(float multiplier, float duration) => StartCoroutine(SpeedBoostRoutine(multiplier, duration));
-
-    // // Doesn't stack!
-    // private IEnumerator SpeedBoostRoutine(float multiplier, float duration)
-    // {
-    //     _speedMultiplier = multiplier;
-    //     yield return new WaitForSeconds(duration);
-    //     _speedMultiplier = 1f;
-    // }
 
     #endregion
 }
