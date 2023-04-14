@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("General")]
     [SerializeField] private float _walkSpeed = 4f;
     [SerializeField] private float _runSpeed = 8f;
-    [SerializeField] private float _jumpForce = 200f;
+    [SerializeField] private float _jumpHeight = 5f;
 
     [Header("Stamina")]
     [SerializeField] private float _staminaDrainRate = 1/8f;
@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private CharacterController _controller;
+    private float _yVelocity;
     private bool _canMove = true;
     private float _stamina = 100f;
     private float _nextStaminaRecharge; // Have to surpass this time for stamina to recharge
@@ -82,21 +83,27 @@ public class PlayerMovement : MonoBehaviour
             speed = _walkSpeed;
         }
 
-        _stamina = Mathf.Clamp(_stamina, 0f, 100f);
-
-        // TODO: Ground checking
-        // if (Input.GetKeyDown(KeyCode.Space) && _stamina >= _jumpStaminaCost)
-        // {
-        //     body.AddForce(Vector3.up * _jumpForce);
-        //     _stamina -= _jumpStaminaCost;
-        //     _nextStaminaRecharge = Time.time + _staminaRechargeDelay;
-        // }
-
         Vector3 moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed;
-        _controller.SimpleMove(moveVec);
 
-        // _moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed * Time.deltaTime;
+        if (_controller.isGrounded)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && _stamina >= _jumpStaminaCost)
+            {
+                // _yVelocity = _jumpHeight;
+                _yVelocity += Mathf.Sqrt(_jumpHeight * -3f * -10f);
+                _stamina -= _jumpStaminaCost;
+                _nextStaminaRecharge = Time.time + _staminaRechargeDelay;
+            }
+            else if (_yVelocity < 0f)
+            {
+                _yVelocity = 0f;
+            }
+        }
 
+        _yVelocity += -10f * Time.deltaTime;
+        _controller.Move((moveVec + Vector3.up * _yVelocity) * Time.deltaTime);
+
+        _stamina = Mathf.Clamp(_stamina, 0f, 100f);
         UpdateText();
     }
 
