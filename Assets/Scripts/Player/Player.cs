@@ -51,15 +51,16 @@ public class Player : MonoBehaviour
     #endregion
 
     [SerializeField] private Flashlight _flash;
+    [SerializeField] private Transform _itemHolder;
     [SerializeField] private Text _healthText; // TEMP
+
     private int _health = 100;
     void SetHealthText() => _healthText.text = $"Health: {_health}";
 
     [SerializeField] private int _bleedIntervalSeconds = 1;
     private int _bleedPerTick;
 
-    // private Item[] _inventory = new Item[5];
-    // private int _itemIndex = 0;
+    private Item _itemEquipped;
 
     private void Awake()
     {
@@ -96,13 +97,9 @@ public class Player : MonoBehaviour
         {
             _look.GetFocusedInteractable()?.OnInteract();
         }
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetMouseButton(0))
         {
-            Bleed(1, 5);
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            _move.SpeedUp(2f, 5);
+            _itemEquipped?.Use();
         }
     }
 
@@ -151,6 +148,19 @@ public class Player : MonoBehaviour
     {
         _health = Mathf.Min(_health + health, 100);
         SetHealthText();
+    }
+
+    #endregion
+    #region Item Stuff
+
+    public void EquipItem(Item item)
+    {
+        // TODO
+        if (_itemEquipped != null) return;
+
+        item.transform.SetParent(_itemHolder);
+        item.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        _itemEquipped = item;
     }
 
     #endregion
