@@ -9,13 +9,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("General")]
     [SerializeField] private float _walkSpeed = 4f;
     [SerializeField] private float _runSpeed = 8f;
-    [SerializeField] private float _jumpForce = 5f;
 
     [Header("Stamina")]
     [SerializeField] private float _staminaDrainRate = 1/8f;
     [SerializeField] private float _staminaRechargeRate = 1/2f;
     [SerializeField] private float _staminaRechargeDelay = 1.5f; // How many seconds of not running it takes for stamina to recharge
+
+    [Header("Jump")]
+    [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private float _jumpStaminaCost = 5f;
+    [SerializeField] private float _gravityMultiplier = 1f; // cannot change mid run
 
     [Header("TEMP SHIT")]
     public Text staminaText;
@@ -39,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
-        _gravity = Physics.gravity;
+        _gravity = Physics.gravity * _gravityMultiplier;
     }
 
     private void Update()
@@ -89,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_controller.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && _stamina >= _jumpStaminaCost)
+            if (Input.GetKey(KeyCode.Space) && _stamina >= _jumpStaminaCost)
             {
                 _yVelocity.y = _jumpForce;
 
@@ -102,13 +105,12 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        _yVelocity += _gravity * Time.deltaTime;
+        _yVelocity += _gravity * Time.deltaTime; // sqrd
         _controller.Move((moveVec + _yVelocity) * Time.deltaTime);
 
         _stamina = Mathf.Clamp(_stamina, 0f, 100f);
         UpdateText();
     }
-
 
     #endregion
     #region Public Methods
