@@ -6,6 +6,11 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
+    private void Awake()
+    {
+        instance = this;
+    }
+    
     public GameObject itemPopup;
 
     public void ShowItems()
@@ -20,10 +25,5 @@ public class UIManager : MonoBehaviour
         itemPopup.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    private void Awake()
-    {
-        instance = this;
     }
 }

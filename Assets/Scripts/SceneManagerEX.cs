@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,15 @@ using UnityEngine.SceneManagement;
 public class SceneManagerEX : MonoBehaviour
 {
     public static SceneManagerEX instance;
-    public void DebugChangeToMainGameScene()
+
+    private void Awake()
     {
-        SceneManager.LoadScene("RanccatTestScene");
+        instance = this;
+    }
+
+    public void ChangeToMainGameScene()
+    {
+        SceneManager.LoadScene("MainGameScene");
     }
 
     public void ChangeToMenuScene()

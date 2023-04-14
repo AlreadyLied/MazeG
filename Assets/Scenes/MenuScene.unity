@@ -662,7 +662,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 418089147}
         m_TargetAssemblyTypeName: SceneManagerEX, Assembly-CSharp
-        m_MethodName: DebugChangeToMainGameScene
+        m_MethodName: ChangeToMainGameScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
