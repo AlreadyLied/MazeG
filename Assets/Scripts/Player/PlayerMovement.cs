@@ -25,11 +25,10 @@ public class PlayerMovement : MonoBehaviour
         staminaText.text = $"Stamina: {_stamina:.00}";
     }
 
-    public Rigidbody body { get; private set; }
-    private Vector3 _moveVec;
+    private CharacterController _controller;
+    private bool _canMove = true;
     private float _stamina = 100f;
     private float _nextStaminaRecharge; // Have to surpass this time for stamina to recharge
-    private bool _canMove = true;
     private Coroutine _bindRoutine; // to prevent overlapping binds
 
     #endregion
@@ -37,22 +36,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        body = GetComponent<Rigidbody>();
+        _controller = GetComponent<CharacterController>();
     }
 
     private void Update()
     {
         if (!_canMove)
         {
-            _moveVec = Vector3.zero;
-
             if (_stamina < 100f && Time.time >= _nextStaminaRecharge)
             {
                 _stamina += _staminaRechargeRate * Time.deltaTime;
             }
 
             _stamina = Mathf.Clamp(_stamina, 0f, 100f);
-
             return;
         }
 
@@ -88,24 +84,22 @@ public class PlayerMovement : MonoBehaviour
 
         _stamina = Mathf.Clamp(_stamina, 0f, 100f);
 
-        _moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed;
-
         // TODO: Ground checking
-        if (Input.GetKeyDown(KeyCode.Space) && _stamina >= _jumpStaminaCost)
-        {
-            body.AddForce(Vector3.up * _jumpForce);
-            _stamina -= _jumpStaminaCost;
-            _nextStaminaRecharge = Time.time + _staminaRechargeDelay;
-        }
+        // if (Input.GetKeyDown(KeyCode.Space) && _stamina >= _jumpStaminaCost)
+        // {
+        //     body.AddForce(Vector3.up * _jumpForce);
+        //     _stamina -= _jumpStaminaCost;
+        //     _nextStaminaRecharge = Time.time + _staminaRechargeDelay;
+        // }
 
+        Vector3 moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed;
+        _controller.SimpleMove(moveVec);
+
+        // _moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed * Time.deltaTime;
 
         UpdateText();
     }
 
-    private void FixedUpdate()
-    {
-        body.MovePosition(body.position + _moveVec * Time.fixedDeltaTime);
-    }
 
     #endregion
     #region Public Methods
@@ -117,7 +111,6 @@ public class PlayerMovement : MonoBehaviour
         if (_bindRoutine != null) StopCoroutine(_bindRoutine);
         _bindRoutine = StartCoroutine(BindRoutine(duration, constrainPos, smoothMoveTime));
     }
-
 
     private IEnumerator BindRoutine(float duration, Vector3? constrainPos = null, float smoothMoveTime = 0f)
     {
@@ -135,16 +128,6 @@ public class PlayerMovement : MonoBehaviour
 
         _canMove = true;
     }
-
-    // public void SpeedBoost(float multiplier, float duration) => StartCoroutine(SpeedBoostRoutine(multiplier, duration));
-
-    // // Doesn't stack!
-    // private IEnumerator SpeedBoostRoutine(float multiplier, float duration)
-    // {
-    //     _speedMultiplier = multiplier;
-    //     yield return new WaitForSeconds(duration);
-    //     _speedMultiplier = 1f;
-    // }
 
     #endregion
 }
