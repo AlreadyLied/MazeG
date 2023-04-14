@@ -1,28 +1,12 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class ItemChest : MonoBehaviour
+public class ItemChest : MonoBehaviour, Interactable
 {
-    public GameObject ItemPopup;
-
-    // private void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.E))
-    //     {
-    //         Cursor.visible = true;
-    //         Cursor.lockState = CursorLockMode.Confined;
-    //         ItemPopup.SetActive(true);
-    //     }
-    // }
-
-    public void ItemSelect()
+    public void OnInteract()
     {
-        ItemPopup.SetActive(false);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        UIManager.instance.ShowItems();
+        Destroy(gameObject);
     }
 }
