@@ -41,7 +41,6 @@ public class Player : MonoBehaviour
     public static Transform Transform { get { return Instance.transform; } }
     public static Vector3 Position { get { return Transform.position; } set { Transform.position = value; } }
 
-
     // use this method to initialize non-static fields
     private static void InitFields()
     {
@@ -52,10 +51,12 @@ public class Player : MonoBehaviour
     #endregion
 
     [SerializeField] private Flashlight _flash;
-
     [SerializeField] private Text _healthText; // TEMP
     private int _health = 100;
     void SetHealthText() => _healthText.text = $"Health: {_health}";
+
+    [SerializeField] private int _bleedIntervalSeconds = 1;
+    private int _bleedPerTick;
 
     // private Item[] _inventory = new Item[5];
     // private int _itemIndex = 0;
@@ -95,9 +96,17 @@ public class Player : MonoBehaviour
         {
             _look.GetFocusedInteractable()?.OnInteract();
         }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Bleed(1, 5);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            _move.SpeedUp(2f, 5);
+        }
     }
 
-    #region Public Methods
+    #region Health Stuff
 
     public void TakeDamage(int damage)
     {
@@ -109,14 +118,32 @@ public class Player : MonoBehaviour
         SetHealthText();
     }
 
-    public void Bleed(int ammount, int count, float interval) => StartCoroutine(BleedRoutine(ammount, count, interval));
-    private IEnumerator BleedRoutine(int ammount, int count, float interval)
+    public void Bleed(int tickDamage, int tickCount)
     {
-        while (count-- > 0)
+        StartCoroutine(BleedRoutineHelper(tickDamage, tickCount));
+
+        if (_bleedPerTick == tickDamage)
         {
-            yield return new WaitForSeconds(interval);
-            
-            TakeDamage(ammount);
+            StartCoroutine(BleedRoutine());
+        }
+    }
+
+    private IEnumerator BleedRoutineHelper(int tickDamage, int tickCount)
+    {
+        _bleedPerTick += tickDamage;
+
+        yield return new WaitForSeconds(tickCount * _bleedIntervalSeconds);
+
+        _bleedPerTick -= tickDamage;
+    }
+
+    private IEnumerator BleedRoutine()
+    {
+        while (_bleedPerTick != 0)
+        {
+            TakeDamage(_bleedPerTick);
+
+            yield return new WaitForSeconds(_bleedIntervalSeconds);
         }
     }
     
