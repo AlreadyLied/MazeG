@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("General")]
     [SerializeField] private float _walkSpeed = 4f;
     [SerializeField] private float _runSpeed = 8f;
-    [SerializeField] private float _jumpHeight = 5f;
+    [SerializeField] private float _jumpForce = 5f;
 
     [Header("Stamina")]
     [SerializeField] private float _staminaDrainRate = 1/8f;
@@ -26,7 +26,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private CharacterController _controller;
-    private float _yVelocity;
+    private Vector3 _yVelocity;
+    private Vector3 _gravity;
     private bool _canMove = true;
     private float _stamina = 100f;
     private float _nextStaminaRecharge; // Have to surpass this time for stamina to recharge
@@ -38,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
+        _gravity = Physics.gravity;
     }
 
     private void Update()
@@ -89,19 +91,19 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space) && _stamina >= _jumpStaminaCost)
             {
-                // _yVelocity = _jumpHeight;
-                _yVelocity += Mathf.Sqrt(_jumpHeight * -3f * -10f);
+                _yVelocity.y = _jumpForce;
+
                 _stamina -= _jumpStaminaCost;
                 _nextStaminaRecharge = Time.time + _staminaRechargeDelay;
             }
-            else if (_yVelocity < 0f)
+            else if (_yVelocity.y < 0f)
             {
-                _yVelocity = 0f;
+                _yVelocity.y = 0f;
             }
         }
 
-        _yVelocity += -10f * Time.deltaTime;
-        _controller.Move((moveVec + Vector3.up * _yVelocity) * Time.deltaTime);
+        _yVelocity += _gravity * Time.deltaTime;
+        _controller.Move((moveVec + _yVelocity) * Time.deltaTime);
 
         _stamina = Mathf.Clamp(_stamina, 0f, 100f);
         UpdateText();
