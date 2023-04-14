@@ -11,8 +11,8 @@ public class ItemManager : MonoBehaviour
         instance = this;
     }
 
-    public GameObject healthPack;
-    public GameObject adrenalineShot;
+    public Item healthPack;
+    public Item adrenalineShot;
 
     public GameObject itemPopup;
 
@@ -25,13 +25,13 @@ public class ItemManager : MonoBehaviour
 
     public void ItemSelectSlot1()
     {
-        // Player.Instance.EquipItem(Instantiate(healthPack));
+        Player.Instance.EquipItem(Instantiate(healthPack));
         ClosePopup();
     }
 
     public void ItemSelectSlot2()
     {
-        // Player.Instance.EquipItem(Instantiate(adrenalineShot));
+        Player.Instance.EquipItem(Instantiate(adrenalineShot));
         ClosePopup();
     }
 

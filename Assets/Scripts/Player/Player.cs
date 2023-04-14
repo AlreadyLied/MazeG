@@ -99,7 +99,8 @@ public class Player : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            _itemEquipped?.Use();
+            if (_itemEquipped != null)
+                _itemEquipped.Use();
         }
     }
 
