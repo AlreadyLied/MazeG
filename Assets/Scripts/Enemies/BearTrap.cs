@@ -4,7 +4,9 @@ using System.Collections;
 public class BearTrap : MonoBehaviour
 {
     [SerializeField] private float _trapDuration = 2.5f;
-    [SerializeField] private int _trapDamage = 5;
+    [SerializeField] private int _trapDamage = 10;
+    [SerializeField] private int _tickDamage = 2;
+    [SerializeField] private int _tickCount = 10;
 
     private Collider _collider;
     private Animator _anim;
@@ -21,7 +23,7 @@ public class BearTrap : MonoBehaviour
         _collider.enabled = false;
 
         Player.Instance.TakeDamage(_trapDamage);
-        Player.Instance.Bleed(1, 10, 2f);
+        Player.Instance.Bleed(_tickDamage, _tickCount);
         Player.Movement.Bind(_trapDuration, transform.position, 0.075f);
 
         StartCoroutine(ActivateRoutine());

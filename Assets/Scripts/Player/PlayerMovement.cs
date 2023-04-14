@@ -32,9 +32,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _yVelocity;
     private Vector3 _gravity;
     private bool _canMove = true;
+    private Coroutine _bindRoutine; // to prevent overlapping binds
     private float _stamina = 100f;
     private float _nextStaminaRecharge; // Have to surpass this time for stamina to recharge
-    private Coroutine _bindRoutine; // to prevent overlapping binds
+    private float _speedMultiplier = 1f;
+    private Coroutine _speedUpRoutine;
 
     #endregion
     #region Monobehaviour Methods
@@ -88,7 +90,8 @@ public class PlayerMovement : MonoBehaviour
             speed = _walkSpeed;
         }
 
-        Vector3 moveVec = (transform.forward * moveZ + transform.right * moveX).normalized * speed;
+        Vector3 moveVec = (transform.forward * moveZ + transform.right * moveX)
+                            .normalized * speed * _speedMultiplier;
 
         if (_controller.isGrounded)
         {
@@ -138,6 +141,20 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         _canMove = true;
+    }
+
+
+    public void SpeedUp(float multiplier, int duration)
+    {
+        if (_speedUpRoutine != null) StopCoroutine(_speedUpRoutine);
+        _speedUpRoutine = StartCoroutine(SpeedUpRoutine(multiplier, duration));
+    }
+    
+    private IEnumerator SpeedUpRoutine(float multiplier, int duration)
+    {
+        _speedMultiplier = multiplier;
+        yield return new WaitForSeconds(duration);
+        _speedMultiplier = 1f;
     }
 
     #endregion
