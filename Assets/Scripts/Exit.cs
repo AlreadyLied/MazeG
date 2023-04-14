@@ -7,6 +7,6 @@ public class Exit : MonoBehaviour
 {
     private void OnTriggerEnter(Collider coll)
     {
-        SceneManager.LoadScene("ClearScene");
+        SceneManagerEX.instance.ChangeToClearScene();
     }
 }
