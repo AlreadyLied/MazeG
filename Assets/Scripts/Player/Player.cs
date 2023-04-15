@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     public static PlayerMovement Movement { get { return Instance._move; } }
     public static PlayerLook Look { get { return Instance._look; } }
     public static PlayerHealth Health { get { return Instance._health; } }
+    public static Flashlight Flashlight { get { return Instance._flash; } }
 
     public static Transform Transform { get { return Instance.transform; } }
     public static Vector3 Position { get { return Transform.position; } set { Transform.position = value; } }
