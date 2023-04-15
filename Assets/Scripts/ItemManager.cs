@@ -33,7 +33,7 @@ public class ItemManager : MonoBehaviour
         _slot3.Add(sprayCan);
         _slot3.Add(pathfindingFairy);
     }
-    
+
     public void ShowItems()
     {
         Cursor.visible = true;

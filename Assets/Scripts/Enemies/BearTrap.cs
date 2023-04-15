@@ -22,8 +22,8 @@ public class BearTrap : MonoBehaviour
     {
         _collider.enabled = false;
 
-        Player.Instance.TakeDamage(_trapDamage);
-        Player.Instance.Bleed(_tickDamage, _tickCount);
+        Player.Health.TakeDamage(_trapDamage);
+        Player.Health.Bleed(_tickDamage, _tickCount);
         Player.Movement.Bind(_trapDuration, transform.position, 0.075f);
 
         StartCoroutine(ActivateRoutine());

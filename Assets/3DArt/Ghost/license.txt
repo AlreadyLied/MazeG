@@ -1,0 +1,11 @@
+Model Information:
+* title:	Spooky hunter
+* source:	https://sketchfab.com/3d-models/spooky-hunter-9721f9a303594fdf813d0a1da32a23aa
+* author:	Agustin Ruella (https://sketchfab.com/agustinruella)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Spooky hunter" (https://sketchfab.com/3d-models/spooky-hunter-9721f9a303594fdf813d0a1da32a23aa) by Agustin Ruella (https://sketchfab.com/agustinruella) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
