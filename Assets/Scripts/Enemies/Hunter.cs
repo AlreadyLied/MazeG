@@ -24,6 +24,7 @@ public class Hunter : MonoBehaviour
     {
         GetComponent<PlayerDetect>().Register(OnPlayerDetect, OnPlayerLost);
         _agent = GetComponent<NavMeshAgent>();
+        _agent.updateRotation = false;
         _destPos = transform.position;
     }
 
@@ -73,13 +74,13 @@ public class Hunter : MonoBehaviour
     private void OnPlayerDetect()
     {
         _state = State.Chase;
-        // _agent.stoppingDistance = _attackDistance; // leave some distance for attack motions
+        _agent.stoppingDistance = _attackDistance; // leave some distance for attack motions
     }
 
     private void OnPlayerLost()
     {
         _state = State.Alert;
-        // _agent.stoppingDistance = 0f; 
+        _agent.stoppingDistance = 0f; 
         _alertTimer = _alertDuration; // start timer
     }
 
