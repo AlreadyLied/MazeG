@@ -7,20 +7,15 @@ public class PlayerDetect : MonoBehaviour
     [Range(0, 360)]
     [SerializeField] private float _detectAngle = 120f; 
     [SerializeField] private int _detectInterval = 10; // Interval in frames to check detection
+    [SerializeField] private Transform _detectRayOriginTr;
     
     private int _obstructionlayer = (1 << (int)Layer.Wall);
-    private float _detectDistanceSquared;
 
     public delegate void DetectEvent();
 
     private DetectEvent OnPlayerDetectEnter;
     private DetectEvent OnPlayerDetectExit;
     public bool detected { get; private set; }
-
-    private void Start()
-    {
-        _detectDistanceSquared = Mathf.Pow(_detectDistance, 2); // in hopes of basic optimization
-    }
 
     // Register callback methods
     public void Register(DetectEvent enter, DetectEvent exit)
@@ -54,14 +49,17 @@ public class PlayerDetect : MonoBehaviour
 
     public bool PlayerInSight()
     {
-        Vector3 dirToPlayer = Player.Position - transform.position;
+        Vector3 dirToPlayer = Player.Position - _detectRayOriginTr.position;
+        dirToPlayer.y = 0;
 
-        if (dirToPlayer.sqrMagnitude > _detectDistanceSquared) return false;
+        float distance = dirToPlayer.magnitude;
 
-        if (Vector3.Angle(transform.forward, dirToPlayer) > _detectAngle / 2) return false;
+        if (distance > _detectDistance) return false;
+
+        if (Vector3.Angle(_detectRayOriginTr.forward, dirToPlayer) > _detectAngle / 2) return false;
 
         // TODO: more rays
-        if (Physics.Raycast(transform.position + transform.up * .25f, dirToPlayer, _detectDistance, _obstructionlayer)) return false;
+        if (Physics.Raycast(_detectRayOriginTr.position, dirToPlayer, distance, _obstructionlayer)) return false;
 
         return true;
     }
