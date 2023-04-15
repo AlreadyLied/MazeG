@@ -3,19 +3,35 @@ using UnityEngine.AI;
 
 public class MapManager : MonoBehaviour
 {
-    private int[,] _maze;
-
-    [SerializeField] private MazeConfiguration _mazeConfig;
-    [SerializeField] private NavMeshSurface _surface;
+    private static MapManager instance;
+    
+    private static int[,] maze;
+    
+    [SerializeField] private MazeConfiguration mazeConfig;
+    [SerializeField] private NavMeshSurface surface;
 
     private void Awake()
     {
-        _maze = MapGenerator.InitMap(_mazeConfig);
-        _surface.BuildNavMesh();
+        instance = this;
+        
+        maze = MapGenerator.InitMap(mazeConfig);
+        surface.BuildNavMesh();
     }
 
     private void Start()
     {
-        Player.Position = (Vector3.forward + Vector3.right) * _mazeConfig.mapSize * _mazeConfig.wallSize;
+        Player.Position = (Vector3.forward + Vector3.right) * mazeConfig.mapSize * mazeConfig.wallSize;
+    }
+
+    public Vector3 GetRandomPos()
+    {
+        int mapLength = mazeConfig.mapSize * 2 - 1;
+        int wallSize = mazeConfig.wallSize;
+        while (true)
+        {
+            int x = Random.Range(1, mapLength - 1);
+            int y = Random.Range(1, mapLength - 1);
+            if (maze[x, y] == 0) return new Vector3(x * wallSize, 0, y * wallSize);
+        }
     }
 }
