@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AlarmDistraction : MonoBehaviour, Item
+public class AlarmDistraction : Item
 {
-    public void Use()
+    public override void Use()
     {
         
     }

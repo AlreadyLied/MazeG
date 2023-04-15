@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathfindingFairy : MonoBehaviour, Item
+public class PathfindingFairy : Item
 {
-    public void Use()
+    public override void Use()
     {
         
     }

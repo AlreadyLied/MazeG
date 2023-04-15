@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPack : MonoBehaviour, Item
+public class HealthPack : Item
 {
-    public void Use()
+    public override void Use()
     {
         Player.Instance.Heal(30);
         Destroy(gameObject);

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b63c47a81194fd749bdfce5267957a5e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - itemPopup: {instanceID: 0}
+  - healthPack: {fileID: 7129940754738977647, guid: fccbc7d2717807442a09810240f6b3b1, type: 3}
+  - adrenalineShot: {fileID: 484761997475939879, guid: 8994882c81b56994bb31810852235efb, type: 3}
+  - invisibleCloak: {fileID: 177033168938660820, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
+  - alarmDistraction: {fileID: 177033168938660820, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
+  - sprayCan: {fileID: 177033168938660820, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
+  - pathfindingFairy: {fileID: 177033168938660820, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

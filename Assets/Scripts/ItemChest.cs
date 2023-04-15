@@ -6,7 +6,7 @@ public class ItemChest : MonoBehaviour, Interactable
 {
     public void OnInteract()
     {
-        UIManager.instance.ShowItems();
+        ItemManager.instance.ShowItems();
         Destroy(gameObject);
     }
 }
