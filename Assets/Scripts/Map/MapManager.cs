@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class MapManager : MonoBehaviour
 {
-    private static MapManager instance;
+    public static MapManager instance;
     
     private static int[,] maze;
     
@@ -33,5 +33,25 @@ public class MapManager : MonoBehaviour
             int y = Random.Range(1, mapLength - 1);
             if (maze[x, y] == 0) return new Vector3(x * wallSize, 0, y * wallSize);
         }
+    }
+
+    public Vector3 GetExitPos()
+    {
+        int mapLength = mazeConfig.mapSize * 2 - 1;
+        int wallSize = mazeConfig.wallSize;
+        int exitX = 0, exitY = 0;
+        for (int x = 0; x < mapLength; x++)
+        {
+            for (int y = 0; y < mapLength; y++)
+            {
+                if (maze[x, y] == 10)
+                {
+                    exitX = x;
+                    exitY = y;
+                }
+            }
+        }
+
+        return new Vector3(exitX * wallSize, 1, exitY * wallSize);
     }
 }
