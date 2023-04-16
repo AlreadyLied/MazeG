@@ -1388,7 +1388,7 @@ MonoBehaviour:
     wallSize: 3
     wallHeight: 10
     monsterNum: 3
-    chestNum: 20
+    chestNum: 40
     batteryNum: 20
     wallPrefab: {fileID: 6492481463518003061, guid: 5162d3f9a9e24424e83e7f9143ce1d67, type: 3}
     exitPrefab: {fileID: 8238572966701939295, guid: 19fa77d23f80ae94abeeb1a4242980e2, type: 3}
@@ -1950,10 +1950,10 @@ MonoBehaviour:
   itemPopup: {fileID: 702477264}
   healthPack: {fileID: 7129940754738977647, guid: fccbc7d2717807442a09810240f6b3b1, type: 3}
   adrenalineShot: {fileID: 484761997475939879, guid: 8994882c81b56994bb31810852235efb, type: 3}
-  invisibleCloak: {fileID: 177033168938660820, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
-  alarmDistraction: {fileID: 177033168938660820, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
-  sprayCan: {fileID: 177033168938660820, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
-  pathfindingFairy: {fileID: 177033168938660820, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
+  invisibleCloak: {fileID: 6022616821366191314, guid: 11ae71c7035948a4f9a760a88cd49607, type: 3}
+  alarmDistraction: {fileID: 6022616821366191314, guid: 11ae71c7035948a4f9a760a88cd49607, type: 3}
+  sprayCan: {fileID: 6022616821366191314, guid: 11ae71c7035948a4f9a760a88cd49607, type: 3}
+  pathfindingFairy: {fileID: 6022616821366191314, guid: 11ae71c7035948a4f9a760a88cd49607, type: 3}
 --- !u!4 &1973860834
 Transform:
   m_ObjectHideFlags: 0
