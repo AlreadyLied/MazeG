@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Unity.VisualScripting.Dependencies.NCalc;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -23,6 +24,8 @@ public class MapGenerator
     private static Transform wallHolder;
     private static Transform chestHolder;
     private static Transform batteryHolder;
+
+    public static Vector3 exitPosition;
 
     class Room
     {
@@ -194,6 +197,7 @@ public class MapGenerator
                 {
                     GameObject.Instantiate(exitPrefab, new Vector3(x * wallSize, wallHeight / 2, y * wallSize),
                         Quaternion.identity);
+                    exitPosition = new Vector3(x * wallSize, wallHeight / 2, y * wallSize);
                 }
             }
         }
