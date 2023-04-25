@@ -8,7 +8,7 @@ public class Hunter : MonoBehaviour
     {
         Idle, // * Pick a random position, move there, and repeat
         Alert, // ^ Even after losing sight of player, chase him with omniscient knowledge about his position, for _alertDuration seconds
-        Chase // ! Chase Player
+        Chase, // ! Chase Player
     }
 
     private NavMeshAgent _agent;
@@ -24,7 +24,7 @@ public class Hunter : MonoBehaviour
     {
         GetComponent<PlayerDetect>().Register(OnPlayerDetect, OnPlayerLost);
         _agent = GetComponent<NavMeshAgent>();
-        _agent.updateRotation = false;
+        // _agent.updateRotation = false;
         _destPos = transform.position;
     }
 
@@ -56,6 +56,7 @@ public class Hunter : MonoBehaviour
                 }
                 else
                 {
+                    _agent.updateRotation = true;
                     _state = State.Idle; // ^ if Player not detected in _alertDuration seconds, transition to idle state
                 }
 
@@ -72,11 +73,17 @@ public class Hunter : MonoBehaviour
 
     }
 
+    private void Attack()
+    {
+        
+    }
+
     private void OnPlayerDetect()
     {
         print("FUUFUFUUFUFUFU");
         _state = State.Chase;
         _agent.stoppingDistance = _attackDistance; // leave some distance for attack motions
+        _agent.updateRotation = false;
     }
 
     private void OnPlayerLost()

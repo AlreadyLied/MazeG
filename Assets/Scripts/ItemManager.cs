@@ -43,21 +43,22 @@ public class ItemManager : MonoBehaviour
 
     public void ItemSelectSlot1()
     {
-        Player.Instance.EquipItem(Instantiate(healthPack));
+        // Player.Instance.EquipItem(Instantiate(healthPack));
+        // Player.Items.AddItem()
         ClosePopup();
     }
 
     public void ItemSelectSlot2()
     {
         Item selected = _slot2[Random.Range(0, _slot2.Count)];
-        Player.Instance.EquipItem(Instantiate(selected));
+        // Player.Instance.EquipItem(Instantiate(selected));
         ClosePopup();
     }
 
     public void ItemSelectSlot3()
     {
         Item selected = _slot3[Random.Range(0, _slot3.Count)];
-        Player.Instance.EquipItem(Instantiate(selected));
+        // Player.Instance.EquipItem(Instantiate(selected));
         ClosePopup();
     }
     

@@ -11,7 +11,7 @@ public static class TransformEx
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            transform.position = Vector3.Lerp(start, dest, (elapsed / duration));
+            transform.localPosition = Vector3.Lerp(start, dest, (elapsed / duration));
 
             yield return null;
         }
