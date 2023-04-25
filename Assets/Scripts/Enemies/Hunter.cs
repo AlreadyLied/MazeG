@@ -38,7 +38,7 @@ public class Hunter : MonoBehaviour
                 // TODO: how's the overhead?
                 if (_agent.remainingDistance < 0.5f)
                 {
-                    // _destPos = GetRandomPos();
+                    _destPos = MapManager.instance.GetRandomPos();
                     _agent.SetDestination(_destPos);
                 }
 
@@ -51,6 +51,7 @@ public class Hunter : MonoBehaviour
                 if (_alertTimer > 0f)
                 {
                     _destPos = Player.Position; // ^ chase Player for _alertDuration seconds even after losing sight
+                    transform.LookAt(_destPos);
                     _agent.SetDestination(_destPos);
                 }
                 else
@@ -63,7 +64,7 @@ public class Hunter : MonoBehaviour
             case State.Chase:
 
                 _destPos = Player.Position;
-                transform.LookAt(Player.Transform);
+                transform.LookAt(_destPos);
                 _agent.SetDestination(_destPos);
 
                 break;
@@ -73,6 +74,7 @@ public class Hunter : MonoBehaviour
 
     private void OnPlayerDetect()
     {
+        print("FUUFUFUUFUFUFU");
         _state = State.Chase;
         _agent.stoppingDistance = _attackDistance; // leave some distance for attack motions
     }

@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class MapManager : MonoBehaviour
 {
-    private static MapManager instance;
+    public static MapManager instance;
     
     private static int[,] maze;
     

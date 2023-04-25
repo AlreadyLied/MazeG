@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private CharacterController _controller;
-    private Vector3 _yVelocity;
+    private Vector3 _yVelocity; // jump & gravity
     private Vector3 _gravity;
     private bool _canMove = true;
     private Coroutine _bindRoutine; // to prevent overlapping binds
@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        // * Recharge stamina even while player is bound.
         if (!_canMove)
         {
             if (_stamina < 100f && Time.time >= _nextStaminaRecharge)
@@ -64,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
         float moveZ = Input.GetAxisRaw("Vertical");
         float speed;
 
-        // If shift held down and non zero movement 
+        // * if shift held down and non zero movement -> drain stamina
         if (Input.GetKey(KeyCode.LeftShift) && (moveX != 0f || moveZ != 0f))
         {
             if (_stamina > 0f)
@@ -77,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
                 speed = _walkSpeed;
             }
 
-            // Have to completely let go of shift (if moving) for stamina recharge
+            // * Have to completely let go of shift (if moving) for stamina recharge
             _nextStaminaRecharge = Time.time + _staminaRechargeDelay;
         }
         else
@@ -126,6 +127,14 @@ public class PlayerMovement : MonoBehaviour
         _bindRoutine = StartCoroutine(BindRoutine(duration, constrainPos, smoothMoveTime));
     }
 
+    public void SpeedUp(float multiplier, int duration)
+    {
+        if (_speedUpRoutine != null) StopCoroutine(_speedUpRoutine);
+        _speedUpRoutine = StartCoroutine(SpeedUpRoutine(multiplier, duration));
+    }
+
+    #endregion
+
     private IEnumerator BindRoutine(float duration, Vector3? constrainPos = null, float smoothMoveTime = 0f)
     {
         _canMove = false;
@@ -142,13 +151,6 @@ public class PlayerMovement : MonoBehaviour
 
         _canMove = true;
     }
-
-
-    public void SpeedUp(float multiplier, int duration)
-    {
-        if (_speedUpRoutine != null) StopCoroutine(_speedUpRoutine);
-        _speedUpRoutine = StartCoroutine(SpeedUpRoutine(multiplier, duration));
-    }
     
     private IEnumerator SpeedUpRoutine(float multiplier, int duration)
     {
@@ -156,6 +158,4 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(duration);
         _speedMultiplier = 1f;
     }
-
-    #endregion
 }
