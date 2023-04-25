@@ -1950,9 +1950,7 @@ MonoBehaviour:
   itemPopup: {fileID: 702477264}
   healthPack: {fileID: 7129940754738977647, guid: fccbc7d2717807442a09810240f6b3b1, type: 3}
   adrenalineShot: {fileID: 484761997475939879, guid: 8994882c81b56994bb31810852235efb, type: 3}
-  invisibleCloak: {fileID: 6022616821366191314, guid: 11ae71c7035948a4f9a760a88cd49607, type: 3}
-  alarmDistraction: {fileID: 6022616821366191314, guid: 11ae71c7035948a4f9a760a88cd49607, type: 3}
-  sprayCan: {fileID: 6022616821366191314, guid: 11ae71c7035948a4f9a760a88cd49607, type: 3}
+  alarmDistraction: {fileID: 1502512603154968361, guid: efba45df037da8948b021926d02d65b4, type: 3}
   pathfindingFairy: {fileID: 6022616821366191314, guid: 11ae71c7035948a4f9a760a88cd49607, type: 3}
 --- !u!4 &1973860834
 Transform:

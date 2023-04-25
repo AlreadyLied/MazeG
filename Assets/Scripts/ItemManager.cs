@@ -13,12 +13,12 @@ public class ItemManager : MonoBehaviour
     // Slot 2
     private List<Item> _slot2 = new List<Item>();
     public Item adrenalineShot;
-    public Item invisibleCloak;
+    // public Item invisibleCloak;
     public Item alarmDistraction;
 
     // Slot 3
     private List<Item> _slot3 = new List<Item>();
-    public Item sprayCan;
+    // public Item sprayCan;
     public Item pathfindingFairy;
 
     
@@ -27,10 +27,10 @@ public class ItemManager : MonoBehaviour
         instance = this;
         
         _slot2.Add(adrenalineShot);
-        _slot2.Add(invisibleCloak);
+        // _slot2.Add(invisibleCloak);
         _slot2.Add(alarmDistraction);
         
-        _slot3.Add(sprayCan);
+        // _slot3.Add(sprayCan);
         _slot3.Add(pathfindingFairy);
     }
 
