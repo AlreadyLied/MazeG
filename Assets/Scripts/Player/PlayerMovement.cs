@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private float _nextStaminaRecharge; // Have to surpass this time for stamina to recharge
     private float _speedMultiplier = 1f;
     private Coroutine _speedUpRoutine;
+    private Coroutine _pushRoutine;
 
     #endregion
     #region Monobehaviour Methods
@@ -124,6 +125,7 @@ public class PlayerMovement : MonoBehaviour
     public void Bind(float duration, Vector3? constrainPos = null, float smoothMoveTime = 0f)
     {
         if (_bindRoutine != null) StopCoroutine(_bindRoutine);
+        if (_pushRoutine != null) StopCoroutine(_pushRoutine); // if player gets bound while being pushed, the effect of pushing stops
         _bindRoutine = StartCoroutine(BindRoutine(duration, constrainPos, smoothMoveTime));
     }
 
@@ -135,8 +137,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void Push(Vector3 force)
     {
-        if (_canMove)
-            StartCoroutine(PushRoutine(force));
+        if (_canMove) // * Pushing has no effect when player is bound
+        {
+            if (_pushRoutine != null) StopCoroutine(_pushRoutine); // No overlapping pushes
+            _pushRoutine = StartCoroutine(PushRoutine(force));
+        }
     }
 
     #endregion
@@ -174,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
         {
             elapsed += Time.deltaTime;
 
-            _controller.Move(force * (1 - (elapsed / duration)) * Time.deltaTime);
+            _controller.Move(force * (1.1f - (elapsed / duration)) * Time.deltaTime);
 
             yield return null;
         }
