@@ -133,6 +133,12 @@ public class PlayerMovement : MonoBehaviour
         _speedUpRoutine = StartCoroutine(SpeedUpRoutine(multiplier, duration));
     }
 
+    public void Push(Vector3 force)
+    {
+        if (_canMove)
+            StartCoroutine(PushRoutine(force));
+    }
+
     #endregion
 
     private IEnumerator BindRoutine(float duration, Vector3? constrainPos = null, float smoothMoveTime = 0f)
@@ -157,5 +163,20 @@ public class PlayerMovement : MonoBehaviour
         _speedMultiplier = multiplier;
         yield return new WaitForSeconds(duration);
         _speedMultiplier = 1f;
+    }
+
+    private IEnumerator PushRoutine(Vector3 force)
+    {
+        float duration = 1f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            _controller.Move(force * (1 - (elapsed / duration)) * Time.deltaTime);
+
+            yield return null;
+        }
     }
 }
