@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(PlayerDetect))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class Hunter : MonoBehaviour
 {
     private enum State 
@@ -134,8 +135,8 @@ public class Hunter : MonoBehaviour
             }
             else
             {
-                _state = State.Chase;
-                _agent.SetDestination(Player.Position);
+                if (_detect.detected) _state = State.Chase;
+                else _state = State.Alert;
             }
 
         }
