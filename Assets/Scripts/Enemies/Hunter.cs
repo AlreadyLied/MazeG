@@ -69,6 +69,7 @@ public class Hunter : MonoBehaviour
     #region FSM Update Functions
     
     // * Pick a random position, move there, repeat
+    // TODO: place beartraps
     private void UpdateIdle() 
     {
         if (_agent.remainingDistance < 0.5f)
