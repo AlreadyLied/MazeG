@@ -9,6 +9,7 @@ public class PathfindingFairy : Item
 
     public override void Use()
     {
+        Used();
         Destroy(gameObject);
         
         GameObject fairy = Instantiate(fairyPrefab, Player.Position, Quaternion.identity);

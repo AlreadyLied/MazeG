@@ -110,4 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98fa7716533a80147b92e460f9319763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: fc472ee4b123ea8429e35927fd2c3922, type: 3}
+  itemInedx: 0
   alarmPrefab: {fileID: 1009170760736501840, guid: 8d6b92627000bdd4696ffed9e14b075c, type: 3}

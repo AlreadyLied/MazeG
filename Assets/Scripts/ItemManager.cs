@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ItemManager : MonoBehaviour
 {
@@ -8,30 +9,13 @@ public class ItemManager : MonoBehaviour
     
     public GameObject itemPopup;
     
-    // Slot 1
     public Item healthPack;
-    // Slot 2
-    private List<Item> _slot2 = new List<Item>();
-    public Item adrenalineShot;
-    // public Item invisibleCloak;
-    public Item alarmDistraction;
+    public List<Item> slot2;
+    public List<Item> slot3;
 
-    // Slot 3
-    private List<Item> _slot3 = new List<Item>();
-    // public Item sprayCan;
-    public Item pathfindingFairy;
-
-    
-    void Start()
+    void Awake()
     {
         instance = this;
-        
-        _slot2.Add(adrenalineShot);
-        // _slot2.Add(invisibleCloak);
-        _slot2.Add(alarmDistraction);
-        
-        // _slot3.Add(sprayCan);
-        _slot3.Add(pathfindingFairy);
     }
 
     public void ShowItems()
@@ -49,14 +33,14 @@ public class ItemManager : MonoBehaviour
 
     public void ItemSelectSlot2()
     {
-        Item selected = _slot2[Random.Range(0, _slot2.Count)];
+        Item selected = slot2[Random.Range(0, slot2.Count)];
         Player.Instance.EquipItem(Instantiate(selected));
         ClosePopup();
     }
 
     public void ItemSelectSlot3()
     {
-        Item selected = _slot3[Random.Range(0, _slot3.Count)];
+        Item selected = slot3[Random.Range(0, slot3.Count)];
         Player.Instance.EquipItem(Instantiate(selected));
         ClosePopup();
     }

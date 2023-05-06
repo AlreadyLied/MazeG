@@ -110,4 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8efae377864a97b4c986192ecd939c7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 6837306c7e027444c9272051363df336, type: 3}
+  itemInedx: 0
   fairyPrefab: {fileID: 8296328027109867830, guid: b2c50afaaa7749d4a9b76d5b6501d5e2, type: 3}
