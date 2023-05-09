@@ -12,15 +12,12 @@ public class UIManager : MonoBehaviour
 
     public Image healthBar;
     public Image staminaBar;
+    public CanvasGroup fadeOutCanvas;
+    private float fadeSpeed = 0.5f;
 
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
-        
     }
 
     public void AddToInventory(Item item)
@@ -45,5 +42,19 @@ public class UIManager : MonoBehaviour
     public void UpdateStamina(float stamina)
     {
         staminaBar.fillAmount = stamina;
+    }
+
+    public void PlayerDied()
+    {
+        StartCoroutine("FadeOut");
+    }
+
+    IEnumerator FadeOut()
+    {
+        while (fadeOutCanvas.alpha < 1)
+        {
+            fadeOutCanvas.alpha += Time.deltaTime * fadeSpeed;
+            yield return null;
+        }
     }
 }

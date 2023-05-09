@@ -21,7 +21,7 @@ public class Flashlight : MonoBehaviour
     // TEMP
     private void SetBatteryText()
     {
-        _batteryLeftText.text = $"Battery Left: {_batteryLeft:.00}";
+        // _batteryLeftText.text = $"Battery Left: {_batteryLeft:.00}";
     }
 
     private void Start()
