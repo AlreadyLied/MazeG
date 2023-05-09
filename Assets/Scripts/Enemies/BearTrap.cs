@@ -8,14 +8,19 @@ public class BearTrap : MonoBehaviour
     [SerializeField] private int _tickDamage = 2;
     [SerializeField] private int _tickCount = 10;
 
+    public System.Action OnActivated;
+    public bool trapActive { get; private set; } = false;
+
     private Collider _collider;
     private Animator _anim;
     private readonly int _disposeTriggerHash = Animator.StringToHash("dispose");
 
-    private void Start()
+    private void Awake()
     {
         _collider = GetComponent<Collider>();
         _anim = GetComponent<Animator>();
+
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -32,6 +37,8 @@ public class BearTrap : MonoBehaviour
     private IEnumerator ActivateRoutine()
     {
         _anim.enabled = true;
+        _anim.Rebind();
+        _anim.Update(0f);
 
         yield return new WaitForSeconds(_trapDuration);
 
@@ -39,6 +46,16 @@ public class BearTrap : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f); // time for animation to complete
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        trapActive = false;
+        OnActivated?.Invoke();
     }
+
+    public void Enable() // for pooling - 
+    {
+        trapActive = true;
+        gameObject.SetActive(true);
+        _collider.enabled = true;
+    }
+
 }

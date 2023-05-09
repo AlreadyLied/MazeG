@@ -27,7 +27,8 @@ public class ItemManager : MonoBehaviour
 
     public void ItemSelectSlot1()
     {
-        Player.Instance.EquipItem(Instantiate(healthPack));
+        // Player.Instance.EquipItem(Instantiate(healthPack));
+        // Player.Items.AddItem()
         ClosePopup();
     }
 

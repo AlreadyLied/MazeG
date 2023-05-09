@@ -47,7 +47,7 @@ public class PlayerDetect : MonoBehaviour
         }
     }
 
-    public bool PlayerInSight()
+    private bool PlayerInSight()
     {
         Vector3 dirToPlayer = Player.Position - _detectRayOriginTr.position;
         dirToPlayer.y = 0;
