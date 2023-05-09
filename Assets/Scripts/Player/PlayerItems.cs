@@ -12,10 +12,10 @@ public class PlayerItems : MonoBehaviour
 
     private void Start()
     {
-        if (_inventory == null)
+        // if (_inventory == null)
             _inventory = new Item[_inventorySize];
-        else
-            _inventorySize = _inventory.Length;
+        // else
+            // _inventorySize = _inventory.Length;
         SelectItem(0); 
     }
 
