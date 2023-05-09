@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
         _instance._move = _instance.GetComponent<PlayerMovement>();
         _instance._look = _instance.GetComponent<PlayerLook>();
         _instance._health = _instance.GetComponent<PlayerHealth>();
+        _instance._items = _instance.GetComponent<PlayerItems>();
     }
 
     #endregion
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
     public static PlayerLook Look { get { return Instance._look; } }
     public static PlayerHealth Health { get { return Instance._health; } }
     public static Flashlight Flashlight { get { return Instance._flash; } }
+    public static PlayerItems Items { get { return Instance._items; } }
 
     public static Transform Transform { get { return Instance.transform; } }
     public static Vector3 Position { get { return Transform.position; } set { Transform.position = value; } }
@@ -52,11 +54,9 @@ public class Player : MonoBehaviour
     private PlayerMovement _move;
     private PlayerLook _look;
     private PlayerHealth _health; 
+    private PlayerItems _items;
 
     [SerializeField] private Flashlight _flash;
-    [SerializeField] private Transform _itemHolder;
-
-    private Item _itemEquipped;
 
     private void Awake()
     {
@@ -95,22 +95,18 @@ public class Player : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            if (_itemEquipped != null)
-                _itemEquipped.Use();
+            _items.UseSelectedItem();
+        }
+
+        int mouseScrollDelta = (int)Input.mouseScrollDelta.y;
+        if (mouseScrollDelta != 0)
+        {
+            _items.OnMouseScroll(mouseScrollDelta);
         }
     }
 
     #region Item Stuff
 
-    public void EquipItem(Item item)
-    {
-        // TODO
-        if (_itemEquipped != null) return;
-
-        item.transform.SetParent(_itemHolder);
-        item.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        _itemEquipped = item;
-    }
 
     #endregion
 }
