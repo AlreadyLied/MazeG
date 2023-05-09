@@ -10,24 +10,20 @@ public class PlayerHealth : MonoBehaviour
     private int _bleedIntervalSeconds = 1;
     private int _bleedPerTick;
 
-    // ~ Temp
-    [SerializeField] private Text _healthText; // TEMP
-    void SetHealthText() => _healthText.text = $"Health: {_health}";
-
     public void TakeDamage(int damage)
     {
         _health -= damage;
         if (_health <= 0)
         {
-            // FUCKING DIE
+            UIManager.instance.PlayerDied();
         }
-        SetHealthText();
+        UIManager.instance.UpdateHealth(_health);
     }
 
     public void Heal(int health)
     {
         _health = Mathf.Min(_health + health, 100);
-        SetHealthText();
+        UIManager.instance.UpdateHealth(_health);
     }
 
     public void Bleed(int tickDamage, int tickCount)

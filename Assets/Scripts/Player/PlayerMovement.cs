@@ -20,14 +20,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _jumpStaminaCost = 5f;
     [SerializeField] private float _gravityMultiplier = 1f; // cannot change mid run
 
-    [Header("TEMP SHIT")]
-    public Text staminaText;
-
-    void UpdateText() 
-    {
-        // staminaText.text = $"Stamina: {_stamina:.00}";
-    }
-
     private CharacterController _controller;
     private Vector3 _yVelocity; // jump & gravity
     private Vector3 _gravity;
@@ -114,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         _controller.Move((moveVec + _yVelocity) * Time.deltaTime);
 
         _stamina = Mathf.Clamp(_stamina, 0f, 100f);
-        UpdateText();
+        UIManager.instance.UpdateStamina(_stamina);
     }
 
     #endregion
