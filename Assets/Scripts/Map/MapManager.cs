@@ -37,21 +37,6 @@ public class MapManager : MonoBehaviour
 
     public Vector3 GetExitPos()
     {
-        int mapLength = mazeConfig.mapSize * 2 - 1;
-        int wallSize = mazeConfig.wallSize;
-        int exitX = 0, exitY = 0;
-        for (int x = 0; x < mapLength; x++)
-        {
-            for (int y = 0; y < mapLength; y++)
-            {
-                if (maze[x, y] == 10)
-                {
-                    exitX = x;
-                    exitY = y;
-                }
-            }
-        }
-
-        return new Vector3(exitX * wallSize, 1, exitY * wallSize);
+        return MapGenerator.exitPosition;
     }
 }

@@ -8,6 +8,8 @@ public class AlarmDistractor : Item
     
     public override void Use()
     {
+        Used();
+        
         Destroy(gameObject);
 
         GameObject alarm = Instantiate(alarmPrefab, Player.Position, Quaternion.identity);

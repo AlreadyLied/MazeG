@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,6 +17,6 @@ public class Fairy : MonoBehaviour
 
         agent.SetDestination(exitPos);
         
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, 30f);
     }
 }
