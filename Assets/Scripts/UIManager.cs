@@ -22,26 +22,26 @@ public class UIManager : MonoBehaviour
 
     public void AddToInventory(Item item)
     {
-        GameObject icon = iconList[item.itemInedx];
+        GameObject icon = iconList[item.itemIndex];
         icon.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         icon.GetComponent<Image>().sprite = item.icon;
     }
 
     public void RemoveFromInventory(Item item)
     {
-        GameObject icon = iconList[item.itemInedx];
+        GameObject icon = iconList[item.itemIndex];
         icon.GetComponent<Image>().sprite = null;
         icon.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
     }
 
     public void UpdateHealth(float health)
     {
-        healthBar.fillAmount = health;
+        healthBar.fillAmount = health / 100;
     }
 
     public void UpdateStamina(float stamina)
     {
-        staminaBar.fillAmount = stamina;
+        staminaBar.fillAmount = stamina / 100;
     }
 
     public void PlayerDied()

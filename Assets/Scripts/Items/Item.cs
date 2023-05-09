@@ -11,5 +11,5 @@ public abstract class Item : MonoBehaviour
     }
     
     public Sprite icon;
-    public int itemInedx;
+    public int itemIndex;
 }
