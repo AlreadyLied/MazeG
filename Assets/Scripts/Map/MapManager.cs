@@ -34,4 +34,9 @@ public class MapManager : MonoBehaviour
             if (maze[x, y] == 0) return new Vector3(x * wallSize, 0, y * wallSize);
         }
     }
+
+    public Vector3 GetExitPos()
+    {
+        return MapGenerator.exitPosition;
+    }
 }

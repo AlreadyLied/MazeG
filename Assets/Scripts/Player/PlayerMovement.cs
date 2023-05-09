@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     void UpdateText() 
     {
-        staminaText.text = $"Stamina: {_stamina:.00}";
+        // staminaText.text = $"Stamina: {_stamina:.00}";
     }
 
     private CharacterController _controller;

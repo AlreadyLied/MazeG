@@ -7,6 +7,7 @@ public class HealthPack : Item
     public override void Use()
     {
         Player.Health.Heal(30);
+        Used();
         Destroy(gameObject);
     }
 }
