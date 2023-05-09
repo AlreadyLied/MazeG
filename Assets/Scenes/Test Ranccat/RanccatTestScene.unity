@@ -3452,7 +3452,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bleedIntervalSeconds: 1
-  _healthText: {fileID: 0}
 --- !u!114 &7740334003876062140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3466,7 +3465,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flash: {fileID: 7740334003812600307}
-  _itemHolder: {fileID: 7740334004494632267}
 --- !u!114 &7740334003876062141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3487,7 +3485,6 @@ MonoBehaviour:
   _jumpForce: 30
   _jumpStaminaCost: 0
   _gravityMultiplier: 2
-  staminaText: {fileID: 0}
 --- !u!114 &7740334003876062142
 MonoBehaviour:
   m_ObjectHideFlags: 0
