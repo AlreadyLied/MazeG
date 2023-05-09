@@ -166,7 +166,7 @@ public class MapGenerator
         DrawMap(config);
         
         GenerateMap(config);
-        SpawnMonsters(config);
+        if (!config.noMonsters) SpawnMonsters(config);
         SpawnItemChests(config);
         SpawnBatteries(config);
 
@@ -329,4 +329,7 @@ public class MazeConfiguration
     public GameObject chestPrefab;
     public GameObject batteryPrefab;
     public GameObject[] monsterPrefabs;
+
+    [Header("DEBUG")]
+    public bool noMonsters;
 }

@@ -9,7 +9,9 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     
     public GameObject[] iconList = new GameObject[4];
-    public Material healthBar;
+
+    public Image healthBar;
+    public Image staminaBar;
 
     private void Awake()
     {
@@ -18,7 +20,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        healthBar.SetFloat("_FILL", 0.1f);
+        
     }
 
     public void AddToInventory(Item item)
@@ -37,20 +39,11 @@ public class UIManager : MonoBehaviour
 
     public void UpdateHealth(float health)
     {
-        healthBar.SetFloat("_FILL", health);
+        healthBar.fillAmount = health;
     }
 
     public void UpdateStamina(float stamina)
     {
-        
-    }
-
-    private void Update()
-    {
-        // This Update method is only used for DEBUG
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            UpdateHealth(0.7f);
-        }
+        staminaBar.fillAmount = stamina;
     }
 }
