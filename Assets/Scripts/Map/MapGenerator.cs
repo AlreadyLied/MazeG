@@ -163,7 +163,7 @@ public class MapGenerator
         DrawMap(config);
         
         GenerateMap(config);
-        SpawnMonsters(config);
+        // SpawnMonsters(config);
         SpawnItemChests(config);
         SpawnBatteries(config);
 

@@ -176,13 +176,4 @@ public class Sniper : MonoBehaviour
         if (_detect.detected) _state = State.Chase;
         else _state = State.Alert;
     }
-
-    // private void OnDrawGizmos()
-    // {
-    //     if (_state == State.Aim)
-    //     {
-    //         Gizmos.color = Color.red;
-    //         Gizmos.DrawRay(_bulletExitTr.position, _bulletExitTr.forward * 50f);
-    //     }
-    // }
 }

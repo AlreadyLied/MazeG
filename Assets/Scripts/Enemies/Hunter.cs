@@ -24,6 +24,17 @@ public class Hunter : MonoBehaviour
     [SerializeField] private float _attackCooldown = 1f;
 
     [Space(10f)]
+
+    [Header("Trap Settings")]
+
+    [SerializeField] private BearTrap _bearTrapPrefab;
+    [SerializeField] private float _bearTrapSetDistanceSqrd = 100f;
+    [SerializeField] private int _maxBearTraps = 3;
+    [SerializeField] private float _bearTrapSetAttemptInterval = 3f;
+
+    [Space(10f)]
+    
+    [Header("Chase Settings")]
     
     [SerializeField] private float _alertDuration = 5f;
 
@@ -32,17 +43,33 @@ public class Hunter : MonoBehaviour
     private float _alertTimer;
     private float _attackTimer;
 
+    private BearTrap[] _bearTraps;
+    private int _bearTrapsPlaced;
+    private float _bearTrapAttemptTimer; // time til next trap set attempt
+
     #region Monobehaviour Methods
 
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
         _agent.SetDestination(transform.position);
-        _agent.updateRotation = false;
 
         _detect = GetComponent<PlayerDetect>();
         _detect.Register(OnPlayerDetect, OnPlayerLost);
+
+        _bearTraps = new BearTrap[_maxBearTraps];
+        for (int i = 0; i < _maxBearTraps; i++)
+        {
+            BearTrap bt = _bearTraps[i] = Instantiate(_bearTrapPrefab);
+            bt.OnActivated += () => 
+            {
+                print("어떤 시바 새끼가 내 덫 밟았어!");
+                _bearTrapsPlaced--;
+            };
+        }
+        _bearTrapAttemptTimer = _bearTrapSetAttemptInterval;
     }
+
 
     private void Update()
     {
@@ -77,6 +104,20 @@ public class Hunter : MonoBehaviour
         {
             _agent.SetDestination(MapManager.instance.GetRandomPos());
         }
+
+        if (_bearTrapsPlaced != _maxBearTraps)
+        {
+            _bearTrapAttemptTimer -= Time.deltaTime;
+
+            if (_bearTrapAttemptTimer <= 0f)
+            {
+                if (TrySetBearTrap())
+                {
+                    _bearTrapAttemptTimer = _bearTrapSetAttemptInterval;
+                    _bearTrapsPlaced++;
+                }
+            }
+        }
     }
     
     // ^ Even after losing sight of player, chase him with omniscient knowledge about his position, for _alertDuration seconds
@@ -93,6 +134,7 @@ public class Hunter : MonoBehaviour
         {
             _state = State.Idle;
             _agent.updateRotation = true;
+            _bearTrapAttemptTimer = _bearTrapSetAttemptInterval;
         }
     }
 
@@ -166,6 +208,28 @@ public class Hunter : MonoBehaviour
     }
 
     #endregion
+
+    private bool TrySetBearTrap()
+    {
+        BearTrap candidate = null;
+
+        for (int i = 0; i < _maxBearTraps; i++)
+        {
+            BearTrap bt = _bearTraps[i];
+
+            if (bt.trapActive)
+            {
+                if ((bt.transform.position - transform.position).sqrMagnitude <= _bearTrapSetDistanceSqrd) 
+                    return false;
+            }
+            else candidate = bt;
+        }
+
+        candidate.Enable();
+        candidate.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+
+        return true;
+    }
 
     private void OnDrawGizmos()
     {
