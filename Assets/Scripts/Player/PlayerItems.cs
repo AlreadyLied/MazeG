@@ -6,16 +6,13 @@ public class PlayerItems : MonoBehaviour
     [SerializeField] private Transform _itemHolder;
 
     private Item[] _inventory;
-    private int _selectedIndex;
-    private Item _selectedItem;
-
-    private bool _flag;
+    private int _selectedIndex; // ! should only be modified via SelectItem
 
     private void Start()
     {
         _inventory = new Item[_inventorySize];
 
-        SelectItem(0); 
+        SelectIndex(0); 
     }
 
     public void UseSelectedItem()
@@ -24,49 +21,66 @@ public class PlayerItems : MonoBehaviour
         if (selected != null) selected.Use();
     }
 
-    public void SelectItem(int index)
+    public void SelectIndex(int index) // ! _selectedIndex should only be modified via this method
     {
-        if (index < 0 || index >= _inventorySize) return;
+        // if index out of range or same as before, do nothing
+        if (index < 0 || index >= _inventorySize || index == _selectedIndex) return;
 
-        // TODO: proper holster / draw animations
-        if (_selectedItem != null) _selectedItem.gameObject.SetActive(false); // holster prev item
+        Item item = _inventory[_selectedIndex]; // prev item
+        if (item != null) HolsterItem(item); // if exists, holster prev item
 
-        _selectedIndex = index;
-        _selectedItem = _inventory[_selectedIndex];
-        if (_selectedItem != null)
-        {
-            _selectedItem.gameObject.SetActive(true);
-            _selectedItem.transform.SetParent(_itemHolder);
-            _selectedItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        }
+        item = _inventory[_selectedIndex = index]; // new item
+        if (item != null) DrawItem(item);
     }
 
     public void OnMouseScroll(int delta)
     {
         int newIndex = (_selectedIndex + delta) % _inventorySize;
-        SelectItem(newIndex);
+        if (newIndex < 0) newIndex += _inventorySize;
+        SelectIndex(newIndex);
     }
 
-    public bool AddItem(Item item)
+    // * Returns true if item added successfully, else false (e.g. inventory is full)
+    // TODO: Maybe a better approach would be to keep track of the number of unoccupied slots,
+    // TODO: and have a public boolean property indicating whether the player's inventory is full or not
+    // TODO: The main advantage of such approach would be that we could check whether AddItem is possible
+    // TODO: prior to calling it, which allows more flexibility on how we deal with a full inventory.
+    // TODO: One downside is that this script should be able to "know" when an item is used.
+    // TODO: We could implement this quite easily using event callbacks, especially since the Item superclass
+    // TODO: already has a concrete method "Used()", but it does create a dependency between classes. 
+    public bool AddItem(Item item) 
     {
-        for (int index = 0; index < _inventorySize; index++)
+        for (int index = 0; index < _inventorySize; index++) // & Linear search _inventory for an empty slot
         {
             if (_inventory[index] == null)
             {
                 _inventory[index] = item;
                 item.itemIndex = index;
-                UIManager.instance.AddToInventory(item);
+                UIManager.instance.AddToInventory(item); // & Update inventory UI
 
-                if (index == _selectedIndex)
-                    SelectItem(index);
+                item.transform.SetParent(_itemHolder);
+                item.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+                if (index == _selectedIndex)    // * if item is added to current index
+                    DrawItem(item);
                 else
-                    item.gameObject.SetActive(false);
+                    HolsterItem(item);
 
                 return true;
             }
         }
 
-        return false;
+        return false; // & Inventory full
+    }
+
+    private void HolsterItem(Item item)
+    {
+        item.gameObject.SetActive(false);
+    }
+
+    private void DrawItem(Item item)
+    {
+        item.gameObject.SetActive(true);
     }
 
 }

@@ -51,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
             }
 
             _stamina = Mathf.Clamp(_stamina, 0f, 100f);
+            UIManager.instance.UpdateStamina(_stamina);
+            
             return;
         }
 
