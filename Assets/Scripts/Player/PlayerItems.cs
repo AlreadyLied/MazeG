@@ -80,6 +80,7 @@ public class PlayerItems : MonoBehaviour
             {
                 _inventory[index] = item;
                 item.itemIndex = index;
+
                 UIManager.instance.AddToInventory(item); // & Update inventory UI
 
                 item.transform.SetParent(_itemHolder);
