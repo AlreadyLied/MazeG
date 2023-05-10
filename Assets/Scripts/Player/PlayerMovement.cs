@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI; // TEMP
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -51,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
             }
 
             _stamina = Mathf.Clamp(_stamina, 0f, 100f);
+            UIManager.instance.UpdateStamina(_stamina);
+            
             return;
         }
 
