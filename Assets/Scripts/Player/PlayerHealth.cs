@@ -17,6 +17,7 @@ public class PlayerHealth : MonoBehaviour
             UIManager.instance.PlayerDied();
         }
         UIManager.instance.UpdateHealth(_health);
+        UIManager.instance.PlayerDamaged(damage);
     }
 
     public void Heal(int health)

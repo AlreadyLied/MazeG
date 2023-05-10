@@ -61,7 +61,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateHealth(int health)
     {
-        healthBar.fillAmount = health / 100;
+        healthBar.fillAmount = health / 100f;
     }
 
     public void UpdateStamina(float stamina)

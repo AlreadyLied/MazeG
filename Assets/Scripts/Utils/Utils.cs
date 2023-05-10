@@ -1,7 +1,7 @@
 
 public class Def
 {
-    public const int inventorySize = 5;
+    public const int inventorySize = 4;
 }
 
 public enum Layer
