@@ -55,6 +55,8 @@ public class PlayerItems : MonoBehaviour
 
         item = _inventory[_selectedIndex = index]; // new item
         if (item != null) DrawItem(item);
+        
+        UIManager.instance.ItemSelect(_selectedIndex);
     }
 
     private void OnMouseScroll(int delta)
