@@ -15,6 +15,21 @@ public class PlayerItems : MonoBehaviour
         SelectIndex(0); 
     }
 
+    // TODO: 드럽다 
+    // TODO: PlayerItems에 Update 둘거면 스크롤이나 클릭도 다 여기서 하든가
+    private void Update()
+    {
+        for (int i = 0; i < _inventorySize; i++)
+        {
+            KeyCode key = KeyCode.Alpha1 + i;
+            if (Input.GetKeyDown(key))
+            {
+                print($"{i+1} pressed");
+                SelectIndex(i);
+            }
+        }
+    }
+
     public void UseSelectedItem()
     {
         Item selected = _inventory[_selectedIndex];
