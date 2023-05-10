@@ -93,16 +93,6 @@ public class Player : MonoBehaviour
         {
             _look.GetFocusedInteractable()?.OnInteract();
         }
-        if (Input.GetMouseButton(0))
-        {
-            _items.UseSelectedItem();
-        }
-
-        int mouseScrollDelta = (int)Input.mouseScrollDelta.y;
-        if (mouseScrollDelta != 0)
-        {
-            _items.OnMouseScroll(mouseScrollDelta);
-        }
     }
 
     #region Item Stuff

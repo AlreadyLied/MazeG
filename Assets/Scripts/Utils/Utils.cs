@@ -1,5 +1,8 @@
-using UnityEngine;
-using System.Collections;
+
+public class Def
+{
+    public const int inventorySize = 5;
+}
 
 public enum Layer
 {

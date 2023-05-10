@@ -61,11 +61,7 @@ public class Hunter : MonoBehaviour
         for (int i = 0; i < _maxBearTraps; i++)
         {
             BearTrap bt = _bearTraps[i] = Instantiate(_bearTrapPrefab);
-            bt.OnActivated += () => 
-            {
-                print("어떤 시바 새끼가 내 덫 밟았어!");
-                _bearTrapsPlaced--;
-            };
+            bt.OnActivated += () => _bearTrapsPlaced--;
         }
         _bearTrapAttemptTimer = _bearTrapSetAttemptInterval;
     }
@@ -177,8 +173,16 @@ public class Hunter : MonoBehaviour
             }
             else
             {
-                if (_detect.detected) _state = State.Chase;
-                else _state = State.Alert;
+                if (_detect.detected) 
+                {
+                    _state = State.Chase;
+                    _agent.SetDestination(Player.Position);
+                }
+                else
+                {
+                    _state = State.Alert;
+                    _alertTimer = _alertDuration;
+                }
             }
 
         }
