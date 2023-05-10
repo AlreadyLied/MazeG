@@ -141,22 +141,26 @@ public class Sniper : MonoBehaviour
 
     private void OnPlayerDetect()
     {
-        _state = State.Chase;
+        if (_state != State.Reload)
+            _state = State.Chase;
     }
 
     private void OnPlayerLost()
     {
-        _state = State.Alert;
-        _agent.stoppingDistance = 0f;
-        _alertTimer = _alertDuration;
-        _aimLine.enabled = false;
+        if (_state != State.Reload)
+        {
+            _state = State.Alert;
+            _agent.stoppingDistance = 0f;
+            _alertTimer = _alertDuration;
+            _aimLine.enabled = false;
+        }
     }
 
     #endregion
 
     private void Shoot(bool hitPlayer)
     {
-        print("Bang");
+        // print("Bang");
 
         if (hitPlayer)
         {
@@ -173,7 +177,15 @@ public class Sniper : MonoBehaviour
 
         yield return new WaitForSeconds(_reloadDuration);
 
-        if (_detect.detected) _state = State.Chase;
-        else _state = State.Alert;
+        if (_detect.detected) 
+        {
+            _state = State.Chase;
+            _agent.SetDestination(Player.Position);
+        }
+        else
+        {
+            _state = State.Alert;
+            _alertTimer = _alertDuration;
+        }
     }
 }

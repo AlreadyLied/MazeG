@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerItems : MonoBehaviour
 {
-    [SerializeField] private int _inventorySize = 4;
     [SerializeField] private Transform _itemHolder;
 
     private Item[] _inventory;
@@ -10,36 +9,46 @@ public class PlayerItems : MonoBehaviour
 
     private void Start()
     {
-        _inventory = new Item[_inventorySize];
+        _inventory = new Item[Def.inventorySize];
 
         SelectIndex(0); 
     }
 
-    // TODO: 드럽다 
-    // TODO: PlayerItems에 Update 둘거면 스크롤이나 클릭도 다 여기서 하든가
     private void Update()
     {
-        for (int i = 0; i < _inventorySize; i++)
+        // number key input
+        for (int i = 0; i < Def.inventorySize; i++)
         {
-            KeyCode key = KeyCode.Alpha1 + i;
-            if (Input.GetKeyDown(key))
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
-                print($"{i+1} pressed");
                 SelectIndex(i);
             }
         }
+
+        // scroll
+        int mouseScrollDelta = (int)Input.mouseScrollDelta.y;
+        if (mouseScrollDelta != 0)
+        {
+            OnMouseScroll(mouseScrollDelta);
+        }
+
+        // click
+        if (Input.GetMouseButton(0))
+        {
+            UseSelectedItem();
+        }
     }
 
-    public void UseSelectedItem()
+    private void UseSelectedItem()
     {
         Item selected = _inventory[_selectedIndex];
         if (selected != null) selected.Use();
     }
 
-    public void SelectIndex(int index) // ! _selectedIndex should only be modified via this method
+    private void SelectIndex(int index) // ! _selectedIndex should only be modified via this method
     {
         // if index out of range or same as before, do nothing
-        if (index < 0 || index >= _inventorySize || index == _selectedIndex) return;
+        if (index < 0 || index >= Def.inventorySize || index == _selectedIndex) return;
 
         Item item = _inventory[_selectedIndex]; // prev item
         if (item != null) HolsterItem(item); // if exists, holster prev item
@@ -48,10 +57,10 @@ public class PlayerItems : MonoBehaviour
         if (item != null) DrawItem(item);
     }
 
-    public void OnMouseScroll(int delta)
+    private void OnMouseScroll(int delta)
     {
-        int newIndex = (_selectedIndex + delta) % _inventorySize;
-        if (newIndex < 0) newIndex += _inventorySize;
+        int newIndex = (_selectedIndex + delta) % Def.inventorySize;
+        if (newIndex < 0) newIndex += Def.inventorySize;
         SelectIndex(newIndex);
     }
 
@@ -65,7 +74,7 @@ public class PlayerItems : MonoBehaviour
     // TODO: already has a concrete method "Used()", but it does create a dependency between classes. 
     public bool AddItem(Item item) 
     {
-        for (int index = 0; index < _inventorySize; index++) // & Linear search _inventory for an empty slot
+        for (int index = 0; index < Def.inventorySize; index++) // & Linear search _inventory for an empty slot
         {
             if (_inventory[index] == null)
             {

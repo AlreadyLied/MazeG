@@ -8,7 +8,7 @@ public class Flashlight : MonoBehaviour
     [SerializeField] private Text _batteryLeftText;
 
     [SerializeField] private Light _light;
-    [SerializeField] private float _flashHitDistance = 10f;
+    // [SerializeField] private float _flashHitDistance = 10f;
     [SerializeField] private float _batteryDrainRate = 0.25f;
 
     private float _batteryLeft = 100f;
