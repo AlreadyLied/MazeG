@@ -6,16 +6,12 @@ public class PlayerItems : MonoBehaviour
     [SerializeField] private Transform _itemHolder;
 
     [SerializeField] private Item[] _inventory;
-    public Item[] Inventory { get { return _inventory; } }
     private int _selectedIndex;
     private Item _selectedItem;
 
     private void Start()
     {
-        // if (_inventory == null)
-            _inventory = new Item[_inventorySize];
-        // else
-            // _inventorySize = _inventory.Length;
+        _inventory = new Item[_inventorySize];
         SelectItem(0); 
     }
 
@@ -52,9 +48,11 @@ public class PlayerItems : MonoBehaviour
     {
         for (int index = 0; index < _inventorySize; index++)
         {
-            if (_inventory[index] != null)
+            if (_inventory[index] == null)
             {
                 _inventory[index] = item;
+                item.itemIndex = index;
+                UIManager.instance.AddToInventory(item);
 
                 if (index == _selectedIndex)
                     SelectItem(index);
