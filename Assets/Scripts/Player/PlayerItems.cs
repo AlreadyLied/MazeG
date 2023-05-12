@@ -67,13 +67,6 @@ public class PlayerItems : MonoBehaviour
     }
 
     // * Returns true if item added successfully, else false (e.g. inventory is full)
-    // TODO: Maybe a better approach would be to keep track of the number of unoccupied slots,
-    // TODO: and have a public boolean property indicating whether the player's inventory is full or not
-    // TODO: The main advantage of such approach would be that we could check whether AddItem is possible
-    // TODO: prior to calling it, which allows more flexibility on how we deal with a full inventory.
-    // TODO: One downside is that this script should be able to "know" when an item is used.
-    // TODO: We could implement this quite easily using event callbacks, especially since the Item superclass
-    // TODO: already has a concrete method "Used()", but it does create a dependency between classes. 
     public bool AddItem(Item item) 
     {
         for (int index = 0; index < Def.inventorySize; index++) // & Linear search _inventory for an empty slot

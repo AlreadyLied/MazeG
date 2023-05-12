@@ -1,11 +1,8 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class Flashlight : MonoBehaviour
 {
-    // TEMP
-    [SerializeField] private Text _batteryLeftText;
 
     [SerializeField] private Light _light;
     // [SerializeField] private float _flashHitDistance = 10f;
@@ -18,18 +15,10 @@ public class Flashlight : MonoBehaviour
 
     // private int _beamCollideLayer = (1 << (int)Layer.Wall) | (1 << (int)Layer.Enemy);
 
-    // TEMP
-    private void SetBatteryText()
-    {
-        // _batteryLeftText.text = $"Battery Left: {_batteryLeft:.00}";
-    }
-
     private void Start()
     {
         _initialLightIntensity = _light.intensity;
         _light.enabled = false;
-        
-        SetBatteryText();
     }
 
     public void Toggle()
@@ -47,7 +36,6 @@ public class Flashlight : MonoBehaviour
     public void ChargeBattery(float delta)
     {
         _batteryLeft += delta;
-        SetBatteryText();
     }
 
     private void ToggleOn()
@@ -58,7 +46,6 @@ public class Flashlight : MonoBehaviour
         _flashRoutine = StartCoroutine(FlashRoutine());
     }
     
-
     private void ToggleOff()
     {
         _light.enabled = false;
@@ -85,8 +72,6 @@ public class Flashlight : MonoBehaviour
             }
 
             _batteryLeft -= _batteryDrainRate * Time.deltaTime;
-            SetBatteryText();
-
 
             // if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, _flashHitDistance, _beamCollideLayer, QueryTriggerInteraction.Collide))
             // {
@@ -107,7 +92,6 @@ public class Flashlight : MonoBehaviour
         }
 
         _batteryLeft = 0f;
-        SetBatteryText();
         ToggleOff();
     }
 }

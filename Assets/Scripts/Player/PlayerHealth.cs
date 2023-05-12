@@ -9,15 +9,21 @@ public class PlayerHealth : MonoBehaviour
     private int _bleedIntervalSeconds = 1;
     private int _bleedPerTick;
 
+    private void OnDisable() => StopAllCoroutines();
+
     public void TakeDamage(int damage)
     {
-        _health -= damage;
-        if (_health <= 0)
-        {
-            UIManager.instance.PlayerDied();
-        }
+        if (_health == 0) return; // Already dead
+
+        _health = Mathf.Max(_health - damage, 0);
+
         UIManager.instance.UpdateHealth(_health);
         UIManager.instance.PlayerDamaged(damage);
+
+        if (_health == 0)
+        {
+            Player.Instance.OnDeath();
+        }
     }
 
     public void Heal(int health)
@@ -30,7 +36,7 @@ public class PlayerHealth : MonoBehaviour
     {
         StartCoroutine(BleedRoutineHelper(tickDamage, tickCount));
 
-        if (_bleedPerTick == tickDamage)
+        if (_bleedPerTick == tickDamage) // * If _bleedPerTick was 0 prior to calling BleedRoutineHelper
         {
             StartCoroutine(BleedRoutine());
         }
@@ -45,7 +51,7 @@ public class PlayerHealth : MonoBehaviour
         _bleedPerTick -= tickDamage;
     }
 
-    private IEnumerator BleedRoutine()
+    private IEnumerator BleedRoutine() // * Applies _bleedPerTick damage every _bleedIntervalSeconds
     {
         while (_bleedPerTick != 0)
         {
