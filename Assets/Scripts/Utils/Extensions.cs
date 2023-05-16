@@ -28,10 +28,22 @@ public static class TransformEx
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(pos - transform.position), interpolation);
     }
 
+    public static Vector3 PlayerPositionHeightCorrected(this Transform transform)
+    {
+        Vector3 pos = Player.Position;
+        pos.y = transform.position.y;
+        return pos;
+    }
+
     public static Vector3 DirectionToPlayerHeightCorrected(this Transform transform)
     {
         Vector3 dir = Player.Position - transform.position; 
         dir.y = 0;
         return dir;
+    }
+
+    public static float DistanceToPlayerHeightCorrected(this Transform transform)
+    {
+        return Vector3.Distance(transform.position, transform.PlayerPositionHeightCorrected());
     }
 }

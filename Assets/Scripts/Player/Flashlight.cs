@@ -3,17 +3,15 @@ using System.Collections;
 
 public class Flashlight : MonoBehaviour
 {
-
     [SerializeField] private Light _light;
-    // [SerializeField] private float _flashHitDistance = 10f;
     [SerializeField] private float _batteryDrainRate = 0.25f;
 
     private float _batteryLeft = 100f;
     private float _initialLightIntensity;
     private Coroutine _flashRoutine;
-    private bool _isOn;
-
-    // private int _beamCollideLayer = (1 << (int)Layer.Wall) | (1 << (int)Layer.Enemy);
+    
+    public float battery { get { return _batteryLeft; } }
+    public bool isOn { get; private set; }
 
     private void Start()
     {
@@ -23,7 +21,7 @@ public class Flashlight : MonoBehaviour
 
     public void Toggle()
     {
-        if (_isOn)
+        if (isOn)
         {
             ToggleOff();
         }
@@ -41,7 +39,7 @@ public class Flashlight : MonoBehaviour
     private void ToggleOn()
     {
         _light.enabled = true;
-        _isOn = true;
+        isOn = true;
 
         _flashRoutine = StartCoroutine(FlashRoutine());
     }
@@ -49,12 +47,11 @@ public class Flashlight : MonoBehaviour
     private void ToggleOff()
     {
         _light.enabled = false;
-        _isOn = false;
+        isOn = false;
 
         StopCoroutine(_flashRoutine);
     }
     
-    // drain battery and check ghost 
     private IEnumerator FlashRoutine()
     {
         while (_batteryLeft > 0f)
@@ -72,21 +69,6 @@ public class Flashlight : MonoBehaviour
             }
 
             _batteryLeft -= _batteryDrainRate * Time.deltaTime;
-
-            // if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, _flashHitDistance, _beamCollideLayer, QueryTriggerInteraction.Collide))
-            // {
-            //     GameObject hitObject = hit.collider.gameObject;
-
-            //     if (hitObject.layer == (int)Layer.Enemy)
-            //     {
-            //         // TEMP
-            //         if (hitObject.TryGetComponent(out GhostTest gt))
-            //         {
-            //             // gt.Hurt();
-            //         }
-            //     }
-            // }
-
 
             yield return null;
         }

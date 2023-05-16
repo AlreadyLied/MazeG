@@ -160,8 +160,6 @@ public class Sniper : MonoBehaviour
 
     private void Shoot(bool hitPlayer)
     {
-        // print("Bang");
-
         if (hitPlayer)
         {
             Player.Health.TakeDamage(_snipeDamage);
