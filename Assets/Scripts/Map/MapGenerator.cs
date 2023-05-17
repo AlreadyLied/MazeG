@@ -166,7 +166,6 @@ public class MapGenerator
         DrawMap(config);
         
         GenerateMap(config);
-        if (!config.noMonsters) SpawnMonsters(config);
         SpawnItemChests(config);
         SpawnBatteries(config);
 
@@ -203,57 +202,44 @@ public class MapGenerator
         }
     }
 
-    private static void SpawnMonsters(MazeConfiguration config)
+    private static void SpawnMonster(MazeConfiguration config)
     {
-        int mapSize = config.mapSize;
-        int mapLength = mapSize * 2 + 1;
-        int wallSize = config.wallSize;
-        int monsterNum = config.monsterNum;
-        int lengthFromEdge = 7;
-        
-        GameObject[] monsterPrefabs = config.monsterPrefabs;
-        List<GameObject> spawnedMonsters = new();
-        
-        // DEBUG
-        if (monsterNum > 4)
-        {
-            Debug.Log("Error: monsterNum should not be larger than 4");
-            return;
-        }
-        if (monsterNum > monsterPrefabs.Length)
-        {
-            Debug.Log("Error: The number of monster prefab is less than monsterNum");
-            return;
-        }
-        // END DEBUG
-
-        List<Tuple<int, int>> spawnLocations = new();
-        Queue<Tuple<int, int>> randomLocation = new();
-        spawnLocations.Add(new Tuple<int, int>(lengthFromEdge, lengthFromEdge));
-        spawnLocations.Add(new Tuple<int, int>(lengthFromEdge, mapLength - lengthFromEdge - 1));
-        spawnLocations.Add(new Tuple<int, int>(mapLength - lengthFromEdge - 1, lengthFromEdge));
-        spawnLocations.Add(new Tuple<int, int>(mapLength - lengthFromEdge - 1, mapLength - lengthFromEdge - 1));
-        for (int idx = 4; idx > 0; idx--)
-        {
-            Tuple<int, int> chooseLocation = spawnLocations[Random.Range(0, idx)];
-            spawnLocations.Remove(chooseLocation);
-            randomLocation.Enqueue(chooseLocation);
-        }
-
-        for (int spawnCount = 1; spawnCount <= monsterNum; spawnCount++)
-        {
-            GameObject monster = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
-            if (spawnedMonsters.Contains(monster))
-            {
-                spawnCount--;
-                continue;
-            }
-            spawnedMonsters.Add(monster);
-            Tuple<int, int> spawnLocation = randomLocation.Dequeue();
-            int spawnX = spawnLocation.Item1 * wallSize;
-            int spawnY = spawnLocation.Item2 * wallSize;
-            GameObject.Instantiate(monster, new Vector3(spawnX, 1, spawnY), Quaternion.identity);
-        }
+        // int mapSize = config.mapSize;
+        // int mapLength = mapSize * 2 + 1;
+        // int wallSize = config.wallSize;
+        // int monsterNum = config.monsterNum;
+        // int lengthFromEdge = 7;
+        //
+        // GameObject[] monsterPrefabs = config.monsterPrefabs;
+        // List<GameObject> spawnedMonsters = new();
+        //
+        // List<Tuple<int, int>> spawnLocations = new();
+        // Queue<Tuple<int, int>> randomLocation = new();
+        // spawnLocations.Add(new Tuple<int, int>(lengthFromEdge, lengthFromEdge));
+        // spawnLocations.Add(new Tuple<int, int>(lengthFromEdge, mapLength - lengthFromEdge - 1));
+        // spawnLocations.Add(new Tuple<int, int>(mapLength - lengthFromEdge - 1, lengthFromEdge));
+        // spawnLocations.Add(new Tuple<int, int>(mapLength - lengthFromEdge - 1, mapLength - lengthFromEdge - 1));
+        // for (int idx = 4; idx > 0; idx--)
+        // {
+        //     Tuple<int, int> chooseLocation = spawnLocations[Random.Range(0, idx)];
+        //     spawnLocations.Remove(chooseLocation);
+        //     randomLocation.Enqueue(chooseLocation);
+        // }
+        //
+        // for (int spawnCount = 1; spawnCount <= monsterNum; spawnCount++)
+        // {
+        //     GameObject monster = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
+        //     if (spawnedMonsters.Contains(monster))
+        //     {
+        //         spawnCount--;
+        //         continue;
+        //     }
+        //     spawnedMonsters.Add(monster);
+        //     Tuple<int, int> spawnLocation = randomLocation.Dequeue();
+        //     int spawnX = spawnLocation.Item1 * wallSize;
+        //     int spawnY = spawnLocation.Item2 * wallSize;
+        //     GameObject.Instantiate(monster, new Vector3(spawnX, 1, spawnY), Quaternion.identity);
+        // }
     }
 
     private static void SpawnItemChests(MazeConfiguration config)
@@ -319,7 +305,6 @@ public class MazeConfiguration
     public int wallHeight;
 
     [Header("Nums")]
-    public int monsterNum;
     public int chestNum;
     public int batteryNum;
 
@@ -329,7 +314,5 @@ public class MazeConfiguration
     public GameObject chestPrefab;
     public GameObject batteryPrefab;
     public GameObject[] monsterPrefabs;
-
-    [Header("DEBUG")]
-    public bool noMonsters;
+    public GameObject zombiePrefab;
 }

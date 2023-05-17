@@ -2315,7 +2315,6 @@ MonoBehaviour:
     baseSize: 3
     wallSize: 3
     wallHeight: 10
-    monsterNum: 3
     chestNum: 40
     batteryNum: 20
     wallPrefab: {fileID: 6492481463518003061, guid: 5162d3f9a9e24424e83e7f9143ce1d67, type: 3}
@@ -2323,7 +2322,7 @@ MonoBehaviour:
     chestPrefab: {fileID: 9031527153444097765, guid: d232a73b99e2aee49bc9524dfe5a0aef, type: 3}
     batteryPrefab: {fileID: 7461594615981988273, guid: 57c1f87d6a7ae6746bd843dc64ab26c8, type: 3}
     monsterPrefabs: []
-    noMonsters: 1
+    zombiePrefab: {fileID: 177033168938660827, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
   surface: {fileID: 1587925865}
 --- !u!4 &1276595800
 Transform:
