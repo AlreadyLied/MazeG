@@ -7,7 +7,8 @@ public class Ghost : MonoBehaviour
     {
         Dormant,    // * Periodically check whether flashlight is on 
         Spawn,      // ^ Show particles and stuff
-        Chase       // ! Chase player. Ghost is vulnerable to flashlight beams in this state
+        Chase,       // & Chase player. Ghost is vulnerable to flashlight beams in this state
+        Attack,     // ! Lunge at player
     }
 
     [SerializeField] private float _flashOffDurationForSpawn = 25f; // how many seconds of flashlight off it takes for ghost to spawn
@@ -15,6 +16,7 @@ public class Ghost : MonoBehaviour
     [SerializeField] private ParticleSystem _passiveEffect;
     [SerializeField] private float _speed = 3f;
     [SerializeField] private float _attackDistance = 4f;
+    [SerializeField] private float _attackDuration = 1f;
 
     private State _state = State.Dormant;
     private float _flashOffDuration;
@@ -61,7 +63,7 @@ public class Ghost : MonoBehaviour
 
         if (transform.DistanceToPlayerHeightCorrected() <= _attackDistance)
         {
-            // TODO: attack state
+            StartCoroutine(AttackRoutine());
         }
         else
         {
@@ -87,6 +89,18 @@ public class Ghost : MonoBehaviour
 
         SetAlpha(1);
         _state = State.Chase;
+    }
+
+    private IEnumerator AttackRoutine()
+    {
+        _state = State.Attack;
+
+        yield return StartCoroutine(transform.SmoothMove(_attackDuration, Player.Position));
+
+        SetAlpha(0f);
+
+        _flashOffDuration = 0f;
+        _state = State.Dormant; // go to sleep
     }
 
     private void SetAlpha(float alpha)
