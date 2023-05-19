@@ -3,6 +3,8 @@ using System.Collections;
 
 public static class TransformEx
 {
+    public delegate float Interpolate(float t);
+
     // Smooth, linear move to destination for duration seconds 
     public static IEnumerator SmoothMove(this Transform transform, float duration, Vector3 dest)
     {
@@ -12,6 +14,20 @@ public static class TransformEx
         {
             elapsed += Time.deltaTime;
             transform.localPosition = Vector3.Lerp(start, dest, (elapsed / duration));
+
+            yield return null;
+        }
+        transform.position = dest;
+    }
+
+    public static IEnumerator SmoothMove(this Transform transform, float duration, Vector3 dest, Interpolate interpolate)
+    {
+        Vector3 start = transform.position;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            transform.localPosition = Vector3.Lerp(start, dest, interpolate(elapsed / duration));
 
             yield return null;
         }

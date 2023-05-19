@@ -13,3 +13,14 @@ public enum Layer
     Floor = 10,
     PlayerInteract = 11,
 }
+
+// public class Utils
+// {
+//     public static int GetLayerMask(params Layer[] layers)
+//     {
+//         int mask = 0;
+//         foreach (Layer layer in layers)
+//             mask |= (1 << (int)layer);
+//         return mask;
+//     }
+// }
