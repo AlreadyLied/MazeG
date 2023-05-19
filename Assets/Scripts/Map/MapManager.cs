@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System;
+using System.Collections.Generic;
 
 public class MapManager : MonoBehaviour
 {
@@ -29,8 +31,8 @@ public class MapManager : MonoBehaviour
         int wallSize = mazeConfig.wallSize;
         while (true)
         {
-            int x = Random.Range(1, mapLength - 1);
-            int y = Random.Range(1, mapLength - 1);
+            int x = UnityEngine.Random.Range(1, mapLength - 1);
+            int y = UnityEngine.Random.Range(1, mapLength - 1);
             if (maze[x, y] == 0) return new Vector3(x * wallSize, 0, y * wallSize);
         }
     }
@@ -38,5 +40,25 @@ public class MapManager : MonoBehaviour
     public Vector3 GetExitPos()
     {
         return MapGenerator.exitPosition;
+    }
+
+    public void SpawnMonster()
+    {
+        int mapSize = mazeConfig.mapSize;
+        int wallSize = mazeConfig.wallSize;
+        GameObject[] monsterPrefabs = mazeConfig.monsterPrefabs;
+        int monsterNum = monsterPrefabs.Length;
+        
+        List<Tuple<int, int>> spawnLocations = new();
+        spawnLocations.Add(new Tuple<int, int>(mapSize + 2, mapSize));
+        spawnLocations.Add(new Tuple<int, int>(mapSize, mapSize + 2));
+        spawnLocations.Add(new Tuple<int, int>(mapSize - 2, mapSize));
+        spawnLocations.Add(new Tuple<int, int>(mapSize, mapSize - 2));
+
+        Tuple<int, int> chosenLocation = spawnLocations[UnityEngine.Random.Range(0, 4)];
+
+        GameObject monster = monsterPrefabs[UnityEngine.Random.Range(0, monsterNum)];
+        Vector3 spawnLocation = new Vector3(chosenLocation.Item1 * wallSize, 0, chosenLocation.Item2 * wallSize);
+        GameObject.Instantiate(monster, spawnLocation, Quaternion.identity);
     }
 }
