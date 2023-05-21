@@ -30,11 +30,14 @@ public class PlayerLook : MonoBehaviour
     // returns null if none
     public Interactable GetFocusedInteractable()
     {
-        if (Physics.Raycast(_viewHolder.position, _viewHolder.forward, out RaycastHit hit, _detectRange, _cameraRaycastLayer))
-        {
-            return hit.transform.GetComponent<Interactable>();    
-        }
+        if (Raycast(out RaycastHit hit, _cameraRaycastLayer, _detectRange))
+            return hit.transform.GetComponent<Interactable>();
         return null;
+    }
+
+    public bool Raycast(out RaycastHit hit, int layerMask = ~0, float distance = Mathf.Infinity)
+    {
+        return Physics.Raycast(_viewHolder.position, _viewHolder.forward, out hit, distance, layerMask);
     }
 }
 
