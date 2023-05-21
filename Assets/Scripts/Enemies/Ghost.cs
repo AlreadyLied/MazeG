@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class Ghost : MonoBehaviour
@@ -50,8 +49,6 @@ public class Ghost : MonoBehaviour
     private Collider _hitDetectCollider; // layer: playertrigger. enabled before attacking to check if attack hit
     private Coroutine _attackRoutine;
 
-    [Header("TEMP SHIT")]
-    [SerializeField] private Slider _spawnSlider;
 
     private void Start()
     {
@@ -60,8 +57,6 @@ public class Ghost : MonoBehaviour
         _material = GetComponentInChildren<MeshRenderer>().material;
 
         _spawnTimeThreshold = _initialSpawnTimeThreshold;
-        _spawnSlider.maxValue = _initialSpawnTimeThreshold;
-
         _speed = _initialSpeed;
         _attackDamage = _initialAttackDamage;
         
@@ -100,8 +95,6 @@ public class Ghost : MonoBehaviour
 
             if (_spawnTimer < 0f) _spawnTimer = 0f;
         }
-
-        _spawnSlider.value = _spawnTimer;
     }
 
     private void UpdateChase()
@@ -194,7 +187,6 @@ public class Ghost : MonoBehaviour
         {
             _level++;
             _spawnTimeThreshold += _spawnTimeThresholdIncrement;
-            _spawnSlider.maxValue = _spawnTimeThreshold;
 
             _attackDamage += _attackDamageIncrement;
             _speed += _speedIncrement;
