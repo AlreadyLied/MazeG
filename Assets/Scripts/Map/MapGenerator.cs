@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Xml;
-using Unity.VisualScripting.Dependencies.NCalc;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MapGenerator
@@ -19,11 +17,13 @@ public class MapGenerator
     // item       30 //
     // battery    40 //
     // base       50 //
+    // room       60 //
     ///////////////////
 
     private static Transform wallHolder;
     private static Transform chestHolder;
     private static Transform batteryHolder;
+    private static Transform monsterHolder;
 
     public static Vector3 exitPosition;
 
@@ -128,6 +128,35 @@ public class MapGenerator
                 maze[y, x] = 50;
             }
         }
+        
+        int roomSize = 5;
+        int maxLength = mapSize * 2 - 1;
+        int minLength = maxLength - roomSize + 1;
+
+        for (int x = 1; x <= roomSize; x++)
+        {
+            for (int y = 1; y <= roomSize; y++)
+            {
+                maze[x, y] = 60;
+            }
+
+            for (int y = maxLength; y >= minLength; y--)
+            {
+                maze[x, y] = 60;
+            }
+        }
+        for (int x = maxLength; x >= minLength; x--)
+        {
+            for (int y = 1; y <= roomSize; y++)
+            {
+                maze[x, y] = 60;
+            }
+
+            for (int y = maxLength; y >= minLength; y--)
+            {
+                maze[x, y] = 60;
+            }
+        }
     }
 
     private static void MakeRoom(Room currentRoom, int mapSize)
@@ -163,12 +192,15 @@ public class MapGenerator
 
         rooms = new Room[mapSize, mapSize];
         maze = new int[mapLength, mapLength];
-        DrawMap(config);
         
+        DrawMap(config);
         GenerateMap(config);
-        if (!config.noMonsters) SpawnMonsters(config);
+        
         SpawnItemChests(config);
         SpawnBatteries(config);
+        SpawnMonsters(config);
+        SpawnAltars(config);
+        SpawnPlayer(config);
 
         return maze;
     }
@@ -206,54 +238,26 @@ public class MapGenerator
     private static void SpawnMonsters(MazeConfiguration config)
     {
         int mapSize = config.mapSize;
-        int mapLength = mapSize * 2 + 1;
+        int maxLength = mapSize * 2;
         int wallSize = config.wallSize;
         int monsterNum = config.monsterNum;
-        int lengthFromEdge = 7;
         
-        GameObject[] monsterPrefabs = config.monsterPrefabs;
-        List<GameObject> spawnedMonsters = new();
-        
-        // DEBUG
-        if (monsterNum > 4)
-        {
-            Debug.Log("Error: monsterNum should not be larger than 4");
-            return;
-        }
-        if (monsterNum > monsterPrefabs.Length)
-        {
-            Debug.Log("Error: The number of monster prefab is less than monsterNum");
-            return;
-        }
-        // END DEBUG
+        GameObject zombie = config.zombiePrefab;
+        monsterHolder = new GameObject("MonsterHolder").transform;
 
-        List<Tuple<int, int>> spawnLocations = new();
-        Queue<Tuple<int, int>> randomLocation = new();
-        spawnLocations.Add(new Tuple<int, int>(lengthFromEdge, lengthFromEdge));
-        spawnLocations.Add(new Tuple<int, int>(lengthFromEdge, mapLength - lengthFromEdge - 1));
-        spawnLocations.Add(new Tuple<int, int>(mapLength - lengthFromEdge - 1, lengthFromEdge));
-        spawnLocations.Add(new Tuple<int, int>(mapLength - lengthFromEdge - 1, mapLength - lengthFromEdge - 1));
-        for (int idx = 4; idx > 0; idx--)
+        int monsterSpawnCount = 0;
+        while (monsterSpawnCount < monsterNum)
         {
-            Tuple<int, int> chooseLocation = spawnLocations[Random.Range(0, idx)];
-            spawnLocations.Remove(chooseLocation);
-            randomLocation.Enqueue(chooseLocation);
-        }
-
-        for (int spawnCount = 1; spawnCount <= monsterNum; spawnCount++)
-        {
-            GameObject monster = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
-            if (spawnedMonsters.Contains(monster))
+            int x = Random.Range(1, maxLength);
+            int y = Random.Range(1, maxLength);
+            if (maze[x, y] == 0)
             {
-                spawnCount--;
-                continue;
+                GameObject.Instantiate(zombie, new Vector3(x * wallSize, 1, y * wallSize), Quaternion.identity,
+                    monsterHolder);
+                monsterSpawnCount++;
             }
-            spawnedMonsters.Add(monster);
-            Tuple<int, int> spawnLocation = randomLocation.Dequeue();
-            int spawnX = spawnLocation.Item1 * wallSize;
-            int spawnY = spawnLocation.Item2 * wallSize;
-            GameObject.Instantiate(monster, new Vector3(spawnX, 1, spawnY), Quaternion.identity);
         }
+        
     }
 
     private static void SpawnItemChests(MazeConfiguration config)
@@ -304,6 +308,35 @@ public class MapGenerator
             }
         }
     }
+
+    private static void SpawnAltars(MazeConfiguration config)
+    {
+        int mapSize = config.mapSize;
+        int wallSize = config.wallSize;
+        int maxLength = mapSize * 2 - 1;
+        GameObject altar = config.altarPrefab;
+        GameObject miniAltar = config.miniAltarPrefab;
+
+        Vector3 altarPos = new Vector3(mapSize * wallSize, 2.5f, mapSize * wallSize);
+
+        GameObject.Instantiate(altar, altarPos, Quaternion.identity);
+
+        GameObject.Instantiate(miniAltar, new Vector3(wallSize, 1, wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(wallSize, 1, maxLength * wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(maxLength * wallSize, 1, wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(maxLength * wallSize, 1, maxLength * wallSize), Quaternion.identity);
+    }
+
+    private static void SpawnPlayer(MazeConfiguration config)
+    {
+        int mapSize = config.mapSize;
+        int wallSize = config.wallSize;
+
+        Vector3 spawnPos = new Vector3(mapSize * wallSize, 0, mapSize * wallSize - 5);
+        
+        Player.Position = spawnPos;
+        Player.Transform.LookAt(spawnPos);
+    }
 }
 
 [Serializable]
@@ -319,9 +352,9 @@ public class MazeConfiguration
     public int wallHeight;
 
     [Header("Nums")]
-    public int monsterNum;
     public int chestNum;
     public int batteryNum;
+    public int monsterNum;
 
     [Header("Prefabs")]
     public GameObject wallPrefab;
@@ -329,7 +362,7 @@ public class MazeConfiguration
     public GameObject chestPrefab;
     public GameObject batteryPrefab;
     public GameObject[] monsterPrefabs;
-
-    [Header("DEBUG")]
-    public bool noMonsters;
+    public GameObject zombiePrefab;
+    public GameObject altarPrefab;
+    public GameObject miniAltarPrefab;
 }

@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2977351173809488984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2977351173809488982}
+  - component: {fileID: 2977351173809488985}
+  m_Layer: 0
+  m_Name: '@MapManager'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2977351173809488982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2977351173809488984}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 125.56991, y: -119.794785, z: 29.82901}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2977351173809488985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2977351173809488984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb670c14193eaa458bfa556a6abd188, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mazeConfig:
+    mapSize: 30
+    holeNum: 240
+    baseSize: 3
+    wallSize: 3
+    wallHeight: 10
+    chestNum: 40
+    batteryNum: 20
+    monsterNum: 0
+    wallPrefab: {fileID: 6492481463518003061, guid: 5162d3f9a9e24424e83e7f9143ce1d67, type: 3}
+    exitPrefab: {fileID: 8238572966701939295, guid: 19fa77d23f80ae94abeeb1a4242980e2, type: 3}
+    chestPrefab: {fileID: 9031527153444097765, guid: d232a73b99e2aee49bc9524dfe5a0aef, type: 3}
+    batteryPrefab: {fileID: 7461594615981988273, guid: 57c1f87d6a7ae6746bd843dc64ab26c8, type: 3}
+    monsterPrefabs: []
+    zombiePrefab: {fileID: 177033168938660827, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
+    altarPrefab: {fileID: 957148649618919970, guid: 38b591632208a8e4eb180e30adb079f9, type: 3}
+    miniAltarPrefab: {fileID: 6373783551369131805, guid: bb84a6f1e856ee140a594213f17a2432, type: 3}
+  surface: {fileID: 0}

@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System;
+using System.Collections.Generic;
 
 public class MapManager : MonoBehaviour
 {
@@ -18,19 +20,14 @@ public class MapManager : MonoBehaviour
         surface.BuildNavMesh();
     }
 
-    private void Start()
-    {
-        Player.Position = (Vector3.forward + Vector3.right) * mazeConfig.mapSize * mazeConfig.wallSize;
-    }
-
     public Vector3 GetRandomPos()
     {
         int mapLength = mazeConfig.mapSize * 2 - 1;
         int wallSize = mazeConfig.wallSize;
         while (true)
         {
-            int x = Random.Range(1, mapLength - 1);
-            int y = Random.Range(1, mapLength - 1);
+            int x = UnityEngine.Random.Range(1, mapLength - 1);
+            int y = UnityEngine.Random.Range(1, mapLength - 1);
             if (maze[x, y] == 0) return new Vector3(x * wallSize, 0, y * wallSize);
         }
     }
@@ -38,5 +35,17 @@ public class MapManager : MonoBehaviour
     public Vector3 GetExitPos()
     {
         return MapGenerator.exitPosition;
+    }
+
+    public void SpawnMonster()
+    {
+        int mapSize = mazeConfig.mapSize;
+        int wallSize = mazeConfig.wallSize;
+        GameObject[] monsterPrefabs = mazeConfig.monsterPrefabs;
+        int monsterNum = monsterPrefabs.Length;
+
+        GameObject monster = monsterPrefabs[UnityEngine.Random.Range(0, monsterNum)];
+        Vector3 spawnLocation = new Vector3(mapSize * wallSize, 0, mapSize * wallSize + 3);
+        Instantiate(monster, spawnLocation, Quaternion.identity);
     }
 }
