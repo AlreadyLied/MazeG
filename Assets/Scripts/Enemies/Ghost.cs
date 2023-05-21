@@ -27,11 +27,16 @@ public class Ghost : MonoBehaviour
     [SerializeField] private float _attackChargeUpDuration = .75f; // charge attack
     [SerializeField] private float _attackCooldownDuration = 1f; // if attack misses, cooldown
 
+    // flashlight 
+    [SerializeField] private float _flashBeamRange = 8f;
+    // [SerializeField] private 
+
     // "level up" every successful attack
     [SerializeField] private int _maxLevel = 5;
     [SerializeField] private float _spawnTimeThresholdIncrement = 5f;
     [SerializeField] private float _speedIncrement = 1f;
     [SerializeField] private int _attackDamageIncrement = 10;
+
 
     private float _spawnTimeThreshold;
     private float _speed;
@@ -103,7 +108,14 @@ public class Ghost : MonoBehaviour
     {
         transform.LookAt(transform.PlayerPositionHeightCorrected());
 
-        if (transform.DistanceToPlayerHeightCorrected() <= _attackRange)
+        float distance = transform.DistanceToPlayerHeightCorrected();
+
+        // if (Player.Flashlight.isOn && distance <= _flashBeamRange)
+        // {
+        //     // if (Physics.Raycast(Player.Flashlight.transform.position, ))
+        // }
+
+        if (distance <= _attackRange)
         {
             _attackRoutine = StartCoroutine(AttackRoutine());
         }

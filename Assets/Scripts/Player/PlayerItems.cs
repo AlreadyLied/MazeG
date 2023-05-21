@@ -7,6 +7,8 @@ public class PlayerItems : MonoBehaviour
     private Item[] _inventory;
     private int _selectedIndex; // ! should only be modified via SelectItem
 
+    public int fragmentCount; 
+
     private void Start()
     {
         _inventory = new Item[Def.inventorySize];
