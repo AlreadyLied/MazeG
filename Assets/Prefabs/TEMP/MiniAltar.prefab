@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6373783551369131807}
   - component: {fileID: 6373783551369131804}
   m_Layer: 0
-  m_Name: PuzzleHolder
+  m_Name: MiniAltar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
