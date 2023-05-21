@@ -20,11 +20,6 @@ public class MapManager : MonoBehaviour
         surface.BuildNavMesh();
     }
 
-    private void Start()
-    {
-        Player.Position = (Vector3.forward + Vector3.right) * mazeConfig.mapSize * mazeConfig.wallSize;
-    }
-
     public Vector3 GetRandomPos()
     {
         int mapLength = mazeConfig.mapSize * 2 - 1;
@@ -48,17 +43,9 @@ public class MapManager : MonoBehaviour
         int wallSize = mazeConfig.wallSize;
         GameObject[] monsterPrefabs = mazeConfig.monsterPrefabs;
         int monsterNum = monsterPrefabs.Length;
-        
-        List<Tuple<int, int>> spawnLocations = new();
-        spawnLocations.Add(new Tuple<int, int>(mapSize + 2, mapSize));
-        spawnLocations.Add(new Tuple<int, int>(mapSize, mapSize + 2));
-        spawnLocations.Add(new Tuple<int, int>(mapSize - 2, mapSize));
-        spawnLocations.Add(new Tuple<int, int>(mapSize, mapSize - 2));
-
-        Tuple<int, int> chosenLocation = spawnLocations[UnityEngine.Random.Range(0, 4)];
 
         GameObject monster = monsterPrefabs[UnityEngine.Random.Range(0, monsterNum)];
-        Vector3 spawnLocation = new Vector3(chosenLocation.Item1 * wallSize, 0, chosenLocation.Item2 * wallSize);
-        GameObject.Instantiate(monster, spawnLocation, Quaternion.identity);
+        Vector3 spawnLocation = new Vector3(mapSize * wallSize, 0, mapSize * wallSize + 3);
+        Instantiate(monster, spawnLocation, Quaternion.identity);
     }
 }

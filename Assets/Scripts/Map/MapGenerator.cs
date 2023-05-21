@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MapGenerator
@@ -191,11 +192,15 @@ public class MapGenerator
 
         rooms = new Room[mapSize, mapSize];
         maze = new int[mapLength, mapLength];
+        
         DrawMap(config);
         GenerateMap(config);
+        
         SpawnItemChests(config);
         SpawnBatteries(config);
         SpawnMonsters(config);
+        SpawnAltars(config);
+        SpawnPlayer(config);
 
         return maze;
     }
@@ -303,6 +308,35 @@ public class MapGenerator
             }
         }
     }
+
+    private static void SpawnAltars(MazeConfiguration config)
+    {
+        int mapSize = config.mapSize;
+        int wallSize = config.wallSize;
+        int maxLength = mapSize * 2 - 1;
+        GameObject altar = config.altarPrefab;
+        GameObject miniAltar = config.miniAltarPrefab;
+
+        Vector3 altarPos = new Vector3(mapSize * wallSize, 2.5f, mapSize * wallSize);
+
+        GameObject.Instantiate(altar, altarPos, Quaternion.identity);
+
+        GameObject.Instantiate(miniAltar, new Vector3(wallSize, 1, wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(wallSize, 1, maxLength * wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(maxLength * wallSize, 1, wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(maxLength * wallSize, 1, maxLength * wallSize), Quaternion.identity);
+    }
+
+    private static void SpawnPlayer(MazeConfiguration config)
+    {
+        int mapSize = config.mapSize;
+        int wallSize = config.wallSize;
+
+        Vector3 spawnPos = new Vector3(mapSize * wallSize, 0, mapSize * wallSize - 5);
+        
+        Player.Position = spawnPos;
+        Player.Transform.LookAt(spawnPos);
+    }
 }
 
 [Serializable]
@@ -330,5 +364,5 @@ public class MazeConfiguration
     public GameObject[] monsterPrefabs;
     public GameObject zombiePrefab;
     public GameObject altarPrefab;
-    public GameObject puzzleHolderPrefab;
+    public GameObject miniAltarPrefab;
 }
