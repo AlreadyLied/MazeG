@@ -321,10 +321,10 @@ public class MapGenerator
 
         GameObject.Instantiate(altar, altarPos, Quaternion.identity);
 
-        GameObject.Instantiate(miniAltar, new Vector3(wallSize, 1, wallSize), Quaternion.identity);
-        GameObject.Instantiate(miniAltar, new Vector3(wallSize, 1, maxLength * wallSize), Quaternion.identity);
-        GameObject.Instantiate(miniAltar, new Vector3(maxLength * wallSize, 1, wallSize), Quaternion.identity);
-        GameObject.Instantiate(miniAltar, new Vector3(maxLength * wallSize, 1, maxLength * wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(wallSize, 0, wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(wallSize, 0, maxLength * wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(maxLength * wallSize, 0, wallSize), Quaternion.identity);
+        GameObject.Instantiate(miniAltar, new Vector3(maxLength * wallSize, 0, maxLength * wallSize), Quaternion.identity);
     }
 
     private static void SpawnPlayer(MazeConfiguration config)
