@@ -26,7 +26,7 @@ public class Sniper : MonoBehaviour
 
     [SerializeField] private float _alertDuration = 5f;
 
-    private State _state = State.Idle;
+    private State _state;
     private NavMeshAgent _agent;
     private PlayerDetect _detect;
     private LineRenderer _aimLine;
@@ -38,7 +38,12 @@ public class Sniper : MonoBehaviour
 
     private void Start()
     {
+        _state = State.Alert;
+        _alertTimer = Mathf.Infinity;
+
         _agent = GetComponent<NavMeshAgent>();
+        _agent.stoppingDistance = 0f;
+
         _detect = GetComponent<PlayerDetect>();
         _detect.Register(OnPlayerDetect, OnPlayerLost);
 
