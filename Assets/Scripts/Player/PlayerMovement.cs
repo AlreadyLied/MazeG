@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _gravityMultiplier = 1f; // cannot change mid run
 
     private CharacterController _controller;
+    private Rigidbody _body;
     private Vector3 _yVelocity; // jump & gravity
     private Vector3 _gravity;
     private bool _canMove = true;
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
+        _body = GetComponent<Rigidbody>();
         _gravity = Physics.gravity * _gravityMultiplier;
     }
 
@@ -137,7 +139,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void DropDead() // go limp. called on player death
+    {
+        StopAllCoroutines();
+
+        Vector3 randomForce = Random.onUnitSphere;
+        randomForce.y = 0;
+        randomForce *= 5f;
+
+        _body.isKinematic = false;
+        _body.useGravity = true;
+        _body.velocity = randomForce;
+    }
+
     #endregion
+    #region Helper Routines
 
     private IEnumerator BindRoutine(float duration, Vector3? constrainPos = null, float smoothMoveTime = 0f)
     {
@@ -177,4 +193,6 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
     }
+
+    #endregion
 }

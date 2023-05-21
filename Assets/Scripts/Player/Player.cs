@@ -58,6 +58,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Flashlight _flash;
 
+    #region MonoBehaviour Methods
+    
     private void Awake()
     {
         if (_instance == null)
@@ -85,18 +87,33 @@ public class Player : MonoBehaviour
         {
             _flash.Toggle();
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            _flash.ChargeBattery(20f);
-        }
         if (Input.GetKeyDown(KeyCode.E))
         {
             _look.GetFocusedInteractable()?.OnInteract();
         }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            _health.TakeDamage(120);
+        }
     }
 
-    #region Item Stuff
+    #endregion
+    #region Public Methods
 
+    // go limp, disable components and notify others
+    public void OnDeath() 
+    {
+        _move.DropDead();
+
+        _move.enabled = false;
+        _look.enabled = false;
+        _health.enabled = false;
+        _items.enabled = false;
+        enabled = false;
+
+        UIManager.instance.PlayerDied();
+    }
 
     #endregion
+
 }

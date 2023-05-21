@@ -33,17 +33,17 @@ public class UIManager : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
-    {
-        curIdx = 0;
-    }
+    // private void Start()
+    // {
+    //     curIdx = 0;
+    // }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H)) PlayerDamaged(10);
-        if (Input.GetKeyDown(KeyCode.J)) PlayerDamaged(30);
-        if (Input.GetKeyDown(KeyCode.K)) PlayerDamaged(50);
-    }
+    // private void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.H)) PlayerDamaged(10);
+    //     if (Input.GetKeyDown(KeyCode.J)) PlayerDamaged(30);
+    //     if (Input.GetKeyDown(KeyCode.K)) PlayerDamaged(50);
+    // }
 
     public void AddToInventory(Item item)
     {
