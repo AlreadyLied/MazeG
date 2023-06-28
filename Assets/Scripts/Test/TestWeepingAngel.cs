@@ -10,14 +10,15 @@ public class TestWeepingAngel : MonoBehaviour
     private int _obstructionMask = 1 << (int)Layer.Wall;
     private Vector3[] _boundingPoints;
 
-    private bool _canTeleport;
+    private bool _updateBounds;
+    private bool _isInSight;
 
     private void Start()
     {
         _cam = Camera.main;
         _collider = GetComponent<Collider>();
         _boundingPoints = new Vector3[8];
-        UpdateBoundingPoints();
+        _updateBounds = true;
     }
 
     /*
@@ -30,16 +31,19 @@ public class TestWeepingAngel : MonoBehaviour
     {
         if (Time.frameCount % _checkFrameInterval == 0)
         {
-            if (InCameraView())
+            if (InPlayerSight())
             {
-                _canTeleport = true;
+                _isInSight = true;
             }
             else
             {
-                if (_canTeleport)
+                if (_isInSight)
                 {
                     Teleport();
+                    _isInSight = false;
                 }
+
+                transform.LookAt(_playerTr);
             }
         }
     }
@@ -50,34 +54,33 @@ public class TestWeepingAngel : MonoBehaviour
         dest.y = 0;
 
         transform.position = dest;
-        // UpdateBoundingPoints();
 
-        _canTeleport = false;
-
-        print("teleport");
+        _updateBounds = true;
     }
 
-    private void UpdateBoundingPoints()
+    private void UpdateBounds()
     {
         Bounds bounds = _collider.bounds;
+
         _boundingPoints[0] = bounds.min;
         _boundingPoints[1] = new Vector3(bounds.min.x, bounds.min.y, bounds.max.z);
         _boundingPoints[2] = new Vector3(bounds.min.x, bounds.max.y, bounds.min.z);
         _boundingPoints[3] = new Vector3(bounds.max.x, bounds.min.y, bounds.min.z);
+
         _boundingPoints[4] = bounds.max;
         _boundingPoints[5] = new Vector3(bounds.max.x, bounds.max.y, bounds.min.z);
         _boundingPoints[6] = new Vector3(bounds.max.x, bounds.min.y, bounds.max.z);
         _boundingPoints[7] = new Vector3(bounds.min.x, bounds.max.y, bounds.max.z);
     }
 
-    private bool InCameraView()
+    private bool InPlayerSight()
     {
-        Vector3 camPos = _cam.transform.position;
+        if (_updateBounds) 
+        {
+            UpdateBounds();
+            _updateBounds = false;
+        }
 
-        UpdateBoundingPoints();
-
-        // check frustum
-        // check raycast
         foreach (Vector3 vertex in _boundingPoints)
         {
             Vector3 viewportPoint = _cam.WorldToViewportPoint(vertex);
@@ -89,12 +92,25 @@ public class TestWeepingAngel : MonoBehaviour
             }
 
             // check obstruction
-            if (!Physics.Linecast(camPos, vertex, _obstructionMask))
+            if (!Physics.Linecast(_cam.transform.position, vertex, _obstructionMask))
             {
+                Debug.DrawLine(_cam.transform.position, vertex, Color.green, .25f);
                 return true;
             }
         }
 
         return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_boundingPoints == null)
+            return;
+        
+        Gizmos.color = Color.red;
+        foreach (Vector3 point in _boundingPoints)
+        {
+            Gizmos.DrawSphere(point, 0.1f);
+        }
     }
 }
