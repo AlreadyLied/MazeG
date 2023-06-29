@@ -2325,7 +2325,7 @@ MonoBehaviour:
     monsterPrefabs: []
     zombiePrefab: {fileID: 177033168938660827, guid: 25cde24cb1d1d084e96ead5f7cb12b35, type: 3}
     altarPrefab: {fileID: 957148649618919970, guid: 38b591632208a8e4eb180e30adb079f9, type: 3}
-    miniAltarPrefab: {fileID: 6373783551369131805, guid: bb84a6f1e856ee140a594213f17a2432, type: 3}
+    miniAltarPrefab: {fileID: 948682444717470328, guid: e335bb8828ea59d4ba9723297d86d8d5, type: 3}
   surface: {fileID: 1587925865}
 --- !u!4 &1276595800
 Transform:
@@ -4059,7 +4059,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12677a875100c524aa344b9a21948af8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _batteryLeftText: {fileID: 0}
   _light: {fileID: 4142589396177142269}
   _batteryDrainRate: 0.0125
 --- !u!4 &4142589398125913613
@@ -4171,6 +4170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemHolder: {fileID: 4142589396647881396}
+  fragmentCount: 0
 --- !u!143 &4142589398137982029
 CharacterController:
   m_ObjectHideFlags: 0
