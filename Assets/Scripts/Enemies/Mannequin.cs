@@ -36,6 +36,8 @@ public class Mannequin : MonoBehaviour
 
                     print("sight exit");
                 }
+
+                transform.LookAtHeightCorrected(Player.Transform);
             }
         }
     }
