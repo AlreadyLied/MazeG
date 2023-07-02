@@ -13,12 +13,19 @@ public class TestWeepingAngel : MonoBehaviour
     private bool _updateBounds;
     private bool _isInSight;
 
+    private int _acknowledgementsLeftTilNextTeleport;
+
+    [SerializeField] private int _minAcknowlegements = 1;
+    [SerializeField] private int _maxAcknowlegements = 5;
+
     private void Start()
     {
         _cam = Camera.main;
         _collider = GetComponent<Collider>();
         _boundingPoints = new Vector3[8];
         _updateBounds = true;
+
+        _acknowledgementsLeftTilNextTeleport = Random.Range(_minAcknowlegements, _maxAcknowlegements + 1);
     }
 
     /*
@@ -39,8 +46,13 @@ public class TestWeepingAngel : MonoBehaviour
             {
                 if (_isInSight)
                 {
-                    Teleport();
+                    if (--_acknowledgementsLeftTilNextTeleport <= 0)
+                    {
+                        Teleport();
+                    }
                     _isInSight = false;
+
+                    print($"acknowledgementsLeft = {_acknowledgementsLeftTilNextTeleport}");
                 }
 
                 transform.LookAt(_playerTr);
@@ -55,7 +67,11 @@ public class TestWeepingAngel : MonoBehaviour
 
         transform.position = dest;
 
+        _acknowledgementsLeftTilNextTeleport = Random.Range(_minAcknowlegements, _maxAcknowlegements + 1);
+
         _updateBounds = true;
+
+        print("Teleport");
     }
 
     private void UpdateBounds()
