@@ -8,7 +8,6 @@ public class MapManager : MonoBehaviour
     public static MapManager instance;
     
     private static int[,] maze;
-    public Camera cam;
     
     [SerializeField] private MazeConfiguration mazeConfig;
     [SerializeField] private NavMeshSurface surface;
@@ -19,14 +18,6 @@ public class MapManager : MonoBehaviour
         
         maze = MapGenerator.InitMap(mazeConfig);
         surface.BuildNavMesh();
-    }
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            GetBackPos();
-        }
     }
 
     public Vector3 GetRandomPos()
@@ -58,14 +49,14 @@ public class MapManager : MonoBehaviour
         Instantiate(monster, spawnLocation, Quaternion.identity);
     }
 
-    public Vector3 GetBackPos()
+    public bool GetBackPos(out Vector3 pos)
     {
         int wallSize = mazeConfig.wallSize;
         
         Vector3 playerPos = Player.Position;
         int posX = Convert.ToInt32(Math.Round(playerPos.x / 3));
         int posY = Convert.ToInt32(Math.Round(playerPos.z / 3));
-
+        
         Vector3 lookDir = Player.Transform.forward;
         double lookX = lookDir.x;
         double lookY = lookDir.z;
@@ -73,7 +64,7 @@ public class MapManager : MonoBehaviour
         Tuple<int, int> firstDir;
         Tuple<int, int> secondDir;
         Tuple<int, int> thirdDir;
-        
+
         // Quadrant 1
         if (lookX >= 0 && lookY >= 0)
         {
@@ -141,25 +132,29 @@ public class MapManager : MonoBehaviour
 
         int x = posX + firstDir.Item1;
         int y = posY + firstDir.Item2;
-        if (maze[x, y] == 0)
+        if (maze[x, y] == 0 || maze[x, y] == 60)
         {
-            return new Vector3(x * wallSize, 0, y * wallSize);
+            pos =  new Vector3(x * wallSize, 0, y * wallSize);
+            return true;
         }
         
         x = posX + secondDir.Item1;
         y = posY + secondDir.Item2;
-        if (maze[x, y] == 0)
+        if (maze[x, y] == 0 || maze[x, y] == 60)
         {
-            return new Vector3(x * wallSize, 0, y * wallSize);
+            pos =  new Vector3(x * wallSize, 0, y * wallSize);
+            return true;
         }
         
         x = posX + thirdDir.Item1;
         y = posY + thirdDir.Item2;
-        if (maze[x, y] == 0)
+        if (maze[x, y] == 0 || maze[x, y] == 60)
         {
-            return new Vector3(x * wallSize, 0, y * wallSize);
+            pos =  new Vector3(x * wallSize, 0, y * wallSize);
+            return true;
         }
 
-        return new Vector3(-1, -1, -1);
+        pos = new Vector3(0, 0, 0);
+        return false;
     }
 }
