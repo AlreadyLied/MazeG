@@ -159,7 +159,7 @@ MonoBehaviour:
   _attackChargeDuration: 0.125
   _attackCooldown: 1
   _bearTrapPrefab: {fileID: 3474314069482688849, guid: 57ca97323bbc7ae47af014cbaaf6ecc5, type: 3}
-  _bearTrapSetDistanceSqrd: 100
+  _bearTrapSetDistanceSqrd: 10000
   _maxBearTraps: 3
   _bearTrapSetAttemptInterval: 3
   _alertDuration: 3

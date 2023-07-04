@@ -62,4 +62,11 @@ public static class TransformEx
     {
         return Vector3.Distance(transform.position, transform.PlayerPositionHeightCorrected());
     }
+
+    public static void LookAtHeightCorrected(this Transform transform, Transform target)
+    {
+        Vector3 pos = target.position;
+        pos.y = transform.position.y;
+        transform.LookAt(pos);
+    }
 }

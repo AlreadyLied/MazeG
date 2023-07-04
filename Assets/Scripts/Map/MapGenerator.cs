@@ -317,7 +317,7 @@ public class MapGenerator
         GameObject altar = config.altarPrefab;
         GameObject miniAltar = config.miniAltarPrefab;
 
-        Vector3 altarPos = new Vector3(mapSize * wallSize, 2.5f, mapSize * wallSize);
+        Vector3 altarPos = new Vector3(mapSize * wallSize, 0, mapSize * wallSize);
 
         GameObject.Instantiate(altar, altarPos, Quaternion.identity);
 
