@@ -13,7 +13,7 @@ public class Hunter : MonoBehaviour
         Attack, // ! Playing attack animation. No transitions occur in Attack state. 
     }
 
-    private State _state = State.Idle;
+    private State _state;
 
     [Header("Attack Settings")]
 
@@ -51,8 +51,12 @@ public class Hunter : MonoBehaviour
 
     private void Start()
     {
+        _state = State.Alert;
+        _alertTimer = Mathf.Infinity;
+
         _agent = GetComponent<NavMeshAgent>();
         _agent.SetDestination(transform.position);
+        _agent.stoppingDistance = 0f;
 
         _detect = GetComponent<PlayerDetect>();
         _detect.Register(OnPlayerDetect, OnPlayerLost);

@@ -28,7 +28,6 @@ public class Ghost : MonoBehaviour
 
     // flashlight 
     [SerializeField] private float _flashBeamRange = 8f;
-    // [SerializeField] private 
 
     // "level up" every successful attack
     [SerializeField] private int _maxLevel = 5;
@@ -102,11 +101,6 @@ public class Ghost : MonoBehaviour
         transform.LookAt(transform.PlayerPositionHeightCorrected());
 
         float distance = transform.DistanceToPlayerHeightCorrected();
-
-        // if (Player.Flashlight.isOn && distance <= _flashBeamRange)
-        // {
-        //     // if (Physics.Raycast(Player.Flashlight.transform.position, ))
-        // }
 
         if (distance <= _attackRange)
         {

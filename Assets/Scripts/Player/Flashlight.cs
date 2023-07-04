@@ -28,7 +28,7 @@ public class Flashlight : MonoBehaviour
         else if (_batteryLeft > 0f)
         {
             ToggleOn();
-        }   
+        }
     }
 
     public void ChargeBattery(float delta)
