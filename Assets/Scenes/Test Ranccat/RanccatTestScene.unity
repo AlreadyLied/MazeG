@@ -2309,7 +2309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb670c14193eaa458bfa556a6abd188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 4142589398112874778}
   mazeConfig:
     mapSize: 30
     holeNum: 240
